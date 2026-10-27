@@ -204,11 +204,11 @@ export function SidebarToggle() {
 				open ? "w-0 -mr-3" : "w-9 mr-0 lh-closed-toggle",
 			)}
 		>
-			<Hint label="Open sidebar" action="toggle-sidebar">
+			<Hint label="Abrir barra lateral" action="toggle-sidebar">
 			<Button
 				variant="ghost"
 				size="icon"
-				aria-label="Open sidebar"
+				aria-label="Abrir barra lateral"
 				aria-hidden={open}
 				tabIndex={open ? -1 : 0}
 				onClick={toggle}
@@ -249,13 +249,13 @@ function SessionStatus({ busy }: { busy: boolean }) {
  *  — trivial, a format function swap). Pure — exported for tests. */
 export function timeAgo(iso: string, now = new Date()): string {
 	const ms = now.getTime() - new Date(iso).getTime();
-	if (ms < 60_000) return "just now";
+	if (ms < 60_000) return "ahora mismo";
 	const min = Math.floor(ms / 60_000);
-	if (min < 60) return `${min}m ago`;
+	if (min < 60) return `hace ${min} min`;
 	const h = Math.floor(min / 60);
-	if (h < 24) return `${h}h ago`;
+	if (h < 24) return `hace ${h} h`;
 	const d = Math.floor(h / 24);
-	if (d < 7) return `${d}d ago`;
+	if (d < 7) return `hace ${d} d`;
 	const date = new Date(iso);
 	const mm = String(date.getMonth() + 1).padStart(2, "0");
 	const dd = String(date.getDate()).padStart(2, "0");
@@ -268,12 +268,12 @@ export function timeAgo(iso: string, now = new Date()): string {
  *  still rides the API payload, so this is a one-line flip back if it's
  *  ever wanted. */
 function sessionMeta(chat: ChatListItem): string {
-	if (chat.compacting) return `Compacting context · ${timeAgo(chat.updatedAt)}`;
-	if (chat.pendingQuestion) return `Waiting for input · ${timeAgo(chat.updatedAt)}`;
+	if (chat.compacting) return `Compactando contexto · ${timeAgo(chat.updatedAt)}`;
+	if (chat.pendingQuestion) return `Esperando entrada · ${timeAgo(chat.updatedAt)}`;
 	if ((chat.kind ?? "teach") === "practice" && chat.pendingProblem) {
-		return `Problem waiting · ${timeAgo(chat.updatedAt)}`;
+		return `Problema pendiente · ${timeAgo(chat.updatedAt)}`;
 	}
-	if (chat.busy) return "Working…";
+	if (chat.busy) return "Trabajando…";
 	return timeAgo(chat.updatedAt);
 }
 
@@ -324,7 +324,7 @@ export function SessionRow({
 			    was left of the name; right-aligned keeps the titles flush with
 			    the teaching rows and reads cleaner. */}
 			{(chat.kind ?? "teach") === "practice" && (
-				<DumbbellIcon className="size-3.5 shrink-0 text-muted-foreground/70" aria-label="Practice session" />
+				<DumbbellIcon className="size-3.5 shrink-0 text-muted-foreground/70" aria-label="Sesión de práctica" />
 			)}
 		</button>
 	);
@@ -370,7 +370,7 @@ export function RenameRow({ chat, onCommit, onCancel }: { chat: ChatListItem; on
 							onCancel();
 						}
 					}}
-					aria-label="Rename session"
+					aria-label="Renombrar sesión"
 					data-testid="session-rename-input"
 					className="lh-input w-full min-w-0 truncate border-0 border-b border-border bg-transparent px-0 text-foreground outline-none"
 				/>
@@ -664,23 +664,23 @@ function SessionsSidebar() {
 						// of the logo, carrying its real shortcut: ⌘G jumps to
 						// the graph view (keyboard-shortcuts routes it to "/",
 						// the same destination as this logo).
-						label="Home"
+						label="Inicio"
 						action="jump-graph"
 						side="right"
 					>
 						<Link
 							href="/"
-							aria-label="Home"
+							aria-label="Inicio"
 							className="lh-no-drag flex size-9 shrink-0 items-center justify-center rounded-md transition-colors hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50"
 						>
 							<LhMark className="size-6" />
 						</Link>
 					</Hint>
-					<Hint label="Close sidebar" action="toggle-sidebar">
+					<Hint label="Cerrar barra lateral" action="toggle-sidebar">
 						<Button
 							variant="ghost"
 							size="icon"
-							aria-label="Close sidebar"
+							aria-label="Cerrar barra lateral"
 							onClick={toggle}
 							className="lh-no-drag"
 						>
@@ -701,8 +701,8 @@ function SessionsSidebar() {
 						className="flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
 					>
 						<PlusIcon className="size-3" />
-						Teaching
-						<span className="sr-only">create a new teaching session</span>
+						Enseñanza
+						<span className="sr-only">crear una nueva sesión de enseñanza</span>
 					</button>
 					<button
 						type="button"
@@ -711,14 +711,14 @@ function SessionsSidebar() {
 						className="flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
 					>
 						<DumbbellIcon className="size-3" />
-						Practice
-						<span className="sr-only">create a new practice session</span>
+						Práctica
+						<span className="sr-only">crear una nueva sesión de práctica</span>
 					</button>
 				</div>
 
 				<div className="mx-3 mb-2 flex items-center gap-2">
-					<span className="text-xs uppercase tracking-widest text-muted-foreground/70">Sessions</span>
-					<Hint label="Search sessions" action="sessions-search" side="bottom">
+					<span className="text-xs uppercase tracking-widest text-muted-foreground/70">Sesiones</span>
+					<Hint label="Buscar sesiones" action="sessions-search" side="bottom">
 					<span className="relative flex-1">
 						<Input
 							ref={searchRef}
@@ -768,8 +768,8 @@ function SessionsSidebar() {
 									e.currentTarget.blur();
 								}
 							}}
-							placeholder="Search…"
-							aria-label="Search sessions"
+							placeholder="Buscar…"
+							aria-label="Buscar sesiones"
 							className="h-6 rounded-sm border-border bg-background pl-6 text-xs placeholder:text-muted-foreground/60"
 						/>
 						<SearchIcon className="pointer-events-none absolute left-1.5 top-1/2 size-3 -translate-y-1/2 text-muted-foreground/70" />
@@ -798,17 +798,17 @@ function SessionsSidebar() {
 									: "text-muted-foreground hover:text-foreground",
 							)}
 						>
-							{f === "teach" ? "Teaching" : f === "all" ? "All" : "Practice"}
+							{f === "teach" ? "Enseñanza" : f === "all" ? "Todas" : "Práctica"}
 						</button>
 					))}
 				</div>
 
 				<div ref={listRef} className="flex-1 overflow-y-auto p-2">
 					{shown === null ? (
-						<div className="px-2 py-4 text-xs text-muted-foreground">Loading…</div>
+						<div className="px-2 py-4 text-xs text-muted-foreground">Cargando…</div>
 					) : shown.length === 0 ? (
 						<div className="px-2 py-4 text-xs text-muted-foreground">
-							{query.trim() ? "No sessions match." : "No sessions yet."}
+							{query.trim() ? "Ninguna sesión coincide." : "Aún no hay sesiones."}
 						</div>
 					) : (
 						shown.map((c, i) =>
@@ -847,7 +847,7 @@ function SessionsSidebar() {
 					    New session — quiet, bottom-pinned, opens the centered
 					    dialog (also mod+, in the keyboard registry). */}
 					<div className="px-3 pb-3 pt-1">
-						<Hint label="Settings" action="open-settings" side="right">
+						<Hint label="Configuración" action="open-settings" side="right">
 							<button
 								type="button"
 								onClick={() => openSettings()}
@@ -855,7 +855,7 @@ function SessionsSidebar() {
 								className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
 							>
 								<SettingsIcon className="size-3" />
-								Settings
+								Configuración
 							</button>
 						</Hint>
 					</div>
@@ -887,7 +887,7 @@ function SessionsSidebar() {
 							}}
 							className="flex items-center rounded-lg px-2.5 py-1.5 text-left text-foreground transition-colors hover:bg-accent"
 						>
-							Rename
+							Renombrar
 						</button>
 						{/* Export as Markdown (owner, release polish 2026-10-06): the
 					    session-markdown engine's user-facing debut — same-origin
@@ -909,7 +909,7 @@ function SessionsSidebar() {
 							}}
 							className="flex items-center rounded-lg px-2.5 py-1.5 text-left text-foreground transition-colors hover:bg-accent"
 						>
-							Export as Markdown…
+							Exportar como Markdown…
 						</button>
 						<button
 							type="button"
@@ -921,7 +921,7 @@ function SessionsSidebar() {
 							}}
 							className="flex items-center rounded-lg px-2.5 py-1.5 text-left text-muted-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
 						>
-							Delete…
+							Eliminar…
 						</button>
 						<div className="my-0.5 border-t border-border/60" aria-hidden="true" />
 						<CoverageMenuBlock chatId={ctxChatId} />

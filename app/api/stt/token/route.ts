@@ -19,7 +19,7 @@ export async function GET() {
 	const key = keyValue("DEEPGRAM_API_KEY");
 	if (!key) {
 		return Response.json(
-			{ message: "No DEEPGRAM_API_KEY — add it to auth.json (desktop) or .env.local (dev)." },
+			{ message: "Falta DEEPGRAM_API_KEY: agrégala a auth.json (escritorio) o a .env.local (desarrollo)." },
 			{ status: 503 },
 		);
 	}
@@ -33,16 +33,16 @@ export async function GET() {
 		if (!res.ok) {
 			const detail = await res.text();
 			return Response.json(
-				{ message: `Deepgram token grant failed (${res.status}): ${detail.slice(0, 200)}` },
+				{ message: `No se pudo obtener el token de Deepgram (${res.status}): ${detail.slice(0, 200)}` },
 				{ status: 502 },
 			);
 		}
 		const data = (await res.json()) as { access_token?: string };
 		if (!data.access_token) {
-			return Response.json({ message: "Deepgram grant returned no token" }, { status: 502 });
+			return Response.json({ message: "Deepgram no devolvió ningún token" }, { status: 502 });
 		}
 		return Response.json({ token: data.access_token });
 	} catch {
-		return Response.json({ message: "Deepgram unreachable" }, { status: 502 });
+		return Response.json({ message: "No se pudo contactar con Deepgram" }, { status: 502 });
 	}
 }

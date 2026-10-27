@@ -29,7 +29,7 @@ test("mixed session pricing sums only API dollars and retains all subscription p
 	const pricing = sessionCost({ turns }); assert.equal(pricing.subscription, 3); assert.equal(pricing.unpriced, 0); assert.equal(pricing.cost, callCost(step, "openai:gpt-5"));
 	assert.deepEqual(pricing.subscriptionProviders, ["GitHub Copilot", "Grok", "ChatGPT"]);
 	const html = renderToStaticMarkup(<StatsBar turns={turns} pricing={pricing} />);
-	assert.match(html, /\$[\d.]+ \+ GitHub Copilot \+ Grok \+ ChatGPT/); assert(!html.includes(" API +")); assert(!html.includes("ChatGPT plan"));
+	assert.match(html, /\$[\d.]+ \+ GitHub Copilot \+ Grok \+ ChatGPT/); assert(!html.includes(" API +")); assert(!html.includes("plan de ChatGPT"));
 });
 test("graph stage/recent aggregates retain distinct subscription providers without inventing dollars", () => {
 	const summary = graphCostSummary({ chats: [{ title: "Fixture", extractions: [{ startedAt: 1, at: "2026-10-24T00:00:00Z", durationMs: 1, stages: { extractor: { model: "github-copilot-subscription:gpt-5", steps: [step] }, auditor: { model: "xai-subscription:grok", steps: [step] } } }] }], sources: [] }, callCost);
@@ -39,5 +39,5 @@ test("graph stage/recent aggregates retain distinct subscription providers witho
 test("model menu distinguishes subscription connection and shows provider label rather than API prices", () => {
 	const native = piModels().getModels("xai")[0]!;
 	const html = renderToStaticMarkup(<ModelMenuList models={[toModelDto({ ...native, provider: "xai-subscription" })]} effectiveId={undefined} onPick={() => {}} />);
-	assert(html.includes("Grok (subscription)")); assert(html.includes(">Grok</span>")); assert(!html.includes("USD per 1M")); assert(!html.includes("$0"));
+	assert(html.includes("Grok (suscripción)")); assert(html.includes(">Grok</span>")); assert(!html.includes("USD por 1M")); assert(!html.includes("$0"));
 });

@@ -63,7 +63,7 @@ for (const [name, results] of [
 	["invalid error", [{ ...completed(), error: 42 }, completed(1)]],
 	["missing failure error", [{ ...completed(), ok: false, outcome: "failed" }, completed(1)]],
 ] as const) it(`malformed response (${name}) is rejected for retry`, () => {
-	assert.throws(() => parseNotesImportResults({ results }, files), /Please retry/);
+	assert.throws(() => parseNotesImportResults({ results }, files), /Vuelve a intentarlo con el archivo/);
 });
 
 it("POST sends only captured files, and retains config/provider details", async () => {
@@ -96,7 +96,7 @@ for (const outcome of ["completed", "failed", "partial", "aborted", "busy"] as c
 	assert.equal(starts, 1);
 	assert.equal(finishes, 1);
 	const html = host!.innerHTML;
-	assert.doesNotMatch(html, /<button|<section|<ul|border|bg-card|rounded|shadow|Retry|Dismiss|Import complete|new propositions|Saved changes|Import stopped|already being imported/);
+	assert.doesNotMatch(html, /<button|<section|<ul|border|bg-card|rounded|shadow|Reintentar|Descartar|Importación completa|nuevas proposiciones|Cambios guardados|Importación detenida|ya se está importando/);
 	assert.deepEqual(Object.keys(current).sort(), ["errors", "importing", "onImportFiles"], "no retained rows, Files, retry or dismiss API");
 	if (outcome === "completed") {
 		assert.equal(html, "");
@@ -143,7 +143,7 @@ it("mixed out-of-order results show only failed files in selection order, includ
 	await mount();
 	await submit(selected);
 	assert.deepEqual(current.errors, ["same.md: first duplicate", "same.md: second duplicate"]);
-	assert.doesNotMatch(host!.innerHTML, /success.md|completed|propositions/);
+	assert.doesNotMatch(host!.innerHTML, /success.md|completed|proposiciones/);
 });
 
 for (const kind of ["network", "non-JSON", "non-2xx", "malformed", "duplicate index"] as const) it(`${kind} hook failure is visible for every selected file, never success`, async () => {
@@ -155,7 +155,7 @@ for (const kind of ["network", "non-JSON", "non-2xx", "malformed", "duplicate in
 	};
 	await mount();
 	await submit();
-	const message = kind === "network" ? "synthetic offline" : kind === "non-2xx" ? "Import request failed (HTTP 503): synthetic refused. Please retry the file." : "Invalid import response. Please retry the file.";
+	const message = kind === "network" ? "synthetic offline" : kind === "non-2xx" ? "La solicitud de importación falló (HTTP 503): synthetic refused. Vuelve a intentarlo con el archivo." : "Respuesta de importación no válida. Vuelve a intentarlo con el archivo.";
 	assert.deepEqual(current.errors, files.map((file) => `${file.name}: ${message}`));
 	assert.equal(host!.querySelectorAll('[role="alert"]').length, 2);
 	assert.equal(finishes, 1);

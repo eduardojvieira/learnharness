@@ -112,7 +112,7 @@ export const DEEPGRAM_KEY_ID = "DEEPGRAM_API_KEY";
  * (desktop) or .env.local (dev)") — the surface says the short truth
  * instead. Exported for pins; the errored idle button's click recognizes
  * it and deep-links Settings → Keys → the Deepgram row. */
-export const DICTATION_KEYLESS = "Dictation needs a Deepgram key";
+export const DICTATION_KEYLESS = "El dictado necesita una clave de Deepgram";
 
 /** Mint a fresh short-lived token (the route holds the real key
  *  server-side). Module-level: the start path's warm cache and the
@@ -125,7 +125,7 @@ async function mintFreshToken(): Promise<string> {
 	const data = (await res.json()) as { token?: string; message?: string };
 	if (!res.ok || !data.token) {
 		if (res.status === 503) throw new Error(DICTATION_KEYLESS);
-		throw new Error(data.message ?? `token route ${res.status}`);
+		throw new Error(data.message ?? `error del token ${res.status}`);
 	}
 	return data.token;
 }
@@ -412,12 +412,12 @@ export function useDictation({ append }: { append: (text: string) => void }): Di
 						})
 						.catch(() => {
 							if (gen === genRef.current) {
-								setError("Deepgram reconnect failed");
+								setError("Falló la reconexión con Deepgram");
 								cleanup();
 							}
 						});
 				} else {
-					setError(`Deepgram connection lost (${ev.code})`);
+					setError(`Se perdió la conexión con Deepgram (${ev.code})`);
 					cleanup();
 				}
 			});
@@ -488,10 +488,10 @@ export function useDictation({ append }: { append: (text: string) => void }): Di
 			if (gen !== genRef.current) return;
 			const msg =
 				e instanceof DOMException && (e.name === "NotAllowedError" || e.name === "SecurityError")
-					? "Microphone permission denied"
+					? "Permiso de micrófono denegado"
 					: e instanceof Error
 						? e.message
-						: "mic unavailable";
+						: "micrófono no disponible";
 			setError(msg);
 			cleanup();
 			return;
@@ -502,7 +502,7 @@ export function useDictation({ append }: { append: (text: string) => void }): Di
 			token = await tokenPromise;
 		} catch (e) {
 			if (gen !== genRef.current) return;
-			setError(e instanceof Error ? e.message : "token unavailable");
+			setError(e instanceof Error ? e.message : "token no disponible");
 			cleanup();
 			return;
 		}
@@ -678,7 +678,7 @@ export function DictationBar({ dictation }: { dictation: Dictation }) {
 				// full reveal (the keyless line KEEPS "Deepgram" — owner overrule:
 				// it's the Keys row label, the truth the user needs). Otherwise the
 				// quiet label + the live ⌘D binding.
-				label={error ?? "Dictate"}
+				label={error ?? "Dictar"}
 				action={error ? undefined : "toggle-dictation"}
 				side="top"
 			>
@@ -692,14 +692,14 @@ export function DictationBar({ dictation }: { dictation: Dictation }) {
 							toggle();
 						}
 					}}
-					aria-label={error ? `Dictation failed: ${error}` : "Start dictation"}
+					aria-label={error ? `Falló el dictado: ${error}` : "Iniciar dictado"}
 					data-testid="dictation-toggle"
 				// Same blurring as the floating chrome (owner, fix wave round 3),
 			// but lower opacity — the mic stays quieter than the model pills.
 			className="flex h-7 w-full items-center justify-center gap-1.5 rounded-md border border-border/50 bg-card/50 text-xs text-muted-foreground/70 shadow-lg backdrop-blur transition-colors hover:border-border hover:text-muted-foreground"
 			>
 					<MicIcon className="size-3.5" />
-					<span className="max-w-full truncate">{error ?? "Dictate"}</span>
+					<span className="max-w-full truncate">{error ?? "Dictar"}</span>
 				</button>
 			</Hint>
 		);
@@ -710,14 +710,14 @@ export function DictationBar({ dictation }: { dictation: Dictation }) {
 			<Hint
 				// The owner flagged this copy good ("Stop dictation (Esc)") —
 				// kept verbatim; only the machinery moved to the styled tooltip.
-				label="Stop dictation (Esc)"
+				label="Detener dictado (Esc)"
 				side="top"
 			>
 				<button
 					type="button"
 					onClick={toggle}
 					disabled={phase === "stopping"}
-					aria-label="Stop dictation"
+					aria-label="Detener dictado"
 				data-testid="dictation-toggle"
 				className="flex h-7 shrink-0 items-center gap-1.5 rounded-md bg-destructive/10 px-2 text-xs font-medium text-destructive transition-colors hover:bg-destructive/20"
 			>
@@ -726,7 +726,7 @@ export function DictationBar({ dictation }: { dictation: Dictation }) {
 				) : (
 					<MicIcon className="size-3.5" />
 				)}
-					Stop
+					Detener
 				</button>
 			</Hint>
 			<span className="size-1.5 shrink-0 animate-pulse rounded-full bg-destructive" aria-hidden />

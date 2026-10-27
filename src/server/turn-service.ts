@@ -29,7 +29,7 @@ import { ModelsNotConfiguredError, ProviderKeyMissingError } from "../core/setti
 /** Distinguish a failed canonical save from later bookkeeping failures. */
 export class TurnPersistenceError extends Error {
 	constructor(cause: unknown) {
-		super("The reply could not be saved.", { cause });
+		super("No se pudo guardar la respuesta.", { cause });
 		this.name = "TurnPersistenceError";
 	}
 }

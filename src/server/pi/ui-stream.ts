@@ -232,7 +232,7 @@ export function runPiTurn(spec: PiTurnSpec): PiTurnHandle {
 			try { onSettleFailure?.(err, reportedErrorText); }
 			catch (cleanupError) { console.error("[turn] settlement cleanup failed:", cleanupError); }
 			if (reportedErrorText === undefined) {
-				reportedErrorText = onSettleError?.(err) ?? "An error occurred.";
+				reportedErrorText = onSettleError?.(err) ?? "Ocurrió un error.";
 				send({ type: "error", errorText: reportedErrorText });
 			}
 		}
@@ -288,7 +288,7 @@ export function runPiTurn(spec: PiTurnSpec): PiTurnHandle {
 				return;
 			}
 			console.error("[turn] agent loop failed:", err);
-			reportedErrorText = onError?.(err) ?? "An error occurred.";
+			reportedErrorText = onError?.(err) ?? "Ocurrió un error.";
 			send({ type: "error", errorText: reportedErrorText });
 			settleWith();
 			closeAll();

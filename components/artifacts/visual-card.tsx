@@ -72,7 +72,7 @@ export function VisualOutputCard({
 	if (!result || typeof result.svg !== "string") {
 		return (
 			<div className="rounded-xl border bg-card p-4 text-sm text-muted-foreground">
-				Figure completed, but the result could not be displayed.
+				La figura se completó, pero no se pudo mostrar el resultado.
 			</div>
 		);
 	}
@@ -81,10 +81,10 @@ export function VisualOutputCard({
 		return (
 			<div className="rounded-xl border bg-card p-4 text-card-foreground" data-testid="visual-card-failed">
 				<div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-					Figure
-					<span className="rounded bg-red-500/15 px-1.5 py-0.5 text-red-500">failed</span>
+					Figura
+					<span className="rounded bg-red-500/15 px-1.5 py-0.5 text-red-500">falló</span>
 				</div>
-				<p className="mt-2 text-sm text-muted-foreground">{result.notes ?? "The figure could not be drawn."}</p>
+				<p className="mt-2 text-sm text-muted-foreground">{result.notes ?? "No se pudo dibujar la figura."}</p>
 			</div>
 		);
 	}
@@ -124,21 +124,22 @@ export function VisualOutputCard({
 				/>
 			</div>
 			<div className="mt-2 flex items-center justify-between gap-2">
-				<div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Figure</div>
+				<div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Figura</div>
 				<div className="flex items-center gap-1.5">
 					{/* The invert affordance (owner round, 2026-10-07): the disc IS
 					    the half-filled contrast circle; the tooltip names it. */}
 					<Toggle
 						checked={inverted}
 						onChange={toggleInverted}
-						label="Invert figure brightness"
-						title="Invert colors"
+						label="Invertir el brillo de la figura"
+						testid="toggle-invert-figure-brightness"
+						title="Invertir colores"
 						discIcon={<InvertDiscIcon className="size-3" />}
 					/>
 					<button
 						type="button"
-						aria-label="Download figure as SVG"
-						title="Download as SVG"
+						aria-label="Descargar la figura como SVG"
+						title="Descargar como SVG"
 						onClick={() => downloadFile("figure.svg", result.svg, "image/svg+xml")}
 						data-testid="visual-download"
 						className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
@@ -148,8 +149,8 @@ export function VisualOutputCard({
 					{overlay && (
 						<button
 							type="button"
-							aria-label="Open figure fullscreen"
-							title="Open fullscreen"
+							aria-label="Abrir la figura en pantalla completa"
+							title="Abrir en pantalla completa"
 							onClick={() => overlay.openFigure(result.svg, inverted)}
 							data-testid="visual-open"
 							className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"

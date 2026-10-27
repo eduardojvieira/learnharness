@@ -8,7 +8,7 @@ export function ConnectionRow({ label, action, disabled, onAction, children, tes
 	return <div className="flex flex-wrap items-center gap-3" data-testid={testid}>
 		<span className="font-ui text-xs text-foreground">{label}</span>
 		{children}
-		<Button type="button" size="xs" variant={action === "Connect" ? "outline" : "ghost"} className={`cursor-pointer disabled:cursor-not-allowed ${action === "Connect" ? "" : "text-muted-foreground hover:text-foreground"}`} data-testid={actionTestid} disabled={disabled} onClick={onAction}>{action}</Button>
+		<Button type="button" size="xs" variant={action === "Conectar" ? "outline" : "ghost"} className={`cursor-pointer disabled:cursor-not-allowed ${action === "Conectar" ? "" : "text-muted-foreground hover:text-foreground"}`} data-testid={actionTestid} disabled={disabled} onClick={onAction}>{action}</Button>
 	</div>;
 }
 

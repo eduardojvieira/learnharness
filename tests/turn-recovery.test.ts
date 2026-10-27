@@ -31,13 +31,13 @@ describe("turn settlement recovery", () => {
 			agent: agentEndingWith(),
 			onFinish() { order.push("save"); throw new Error("synthetic disk failure"); },
 			onSettleFailure() { order.push("cleanup"); },
-			onSettleError() { order.push("report"); return "The reply could not be saved."; },
+			onSettleError() { order.push("report"); return "No se pudo guardar la respuesta."; },
 		});
 		const frames = wireFrames(await new Response(handle.subscribe()).text());
 		assert.deepEqual(order, ["save", "cleanup", "report"]);
 		assert.equal(frames.at(-1), "[DONE]");
 		assert.equal(frames.filter(f => f.includes('"type":"error"')).length, 1);
-		assert.ok(frames.at(-2)?.includes("The reply could not be saved."));
+		assert.ok(frames.at(-2)?.includes("No se pudo guardar la respuesta."));
 	});
 
 	it("still reports settlement failure when cleanup itself throws", async () => {
@@ -45,7 +45,7 @@ describe("turn settlement recovery", () => {
 			agent: agentEndingWith(),
 			onFinish() { throw new Error("synthetic save failure"); },
 			onSettleFailure() { throw new Error("synthetic cleanup failure"); },
-			onSettleError: () => "The reply could not be saved.",
+			onSettleError: () => "No se pudo guardar la respuesta.",
 		});
 		const frames = wireFrames(await new Response(handle.subscribe()).text());
 		assert.equal(frames.at(-1), "[DONE]");
@@ -56,12 +56,12 @@ describe("turn settlement recovery", () => {
 		let cleanups = 0;
 		const handle = runPiTurn({
 			agent: agentEndingWith(new Error("synthetic loop failure")),
-			onError: () => "An error occurred.",
+			onError: () => "Ocurrió un error.",
 			onFinish() { throw new Error("synthetic save failure"); },
 			onSettleFailure(error, reportedErrorText) {
 				cleanups++;
 				assert.match(String(error), /synthetic save failure/);
-				assert.equal(reportedErrorText, "An error occurred.");
+				assert.equal(reportedErrorText, "Ocurrió un error.");
 			},
 		});
 		const frames = wireFrames(await new Response(handle.subscribe()).text());
@@ -85,6 +85,6 @@ describe("turn settlement recovery", () => {
 			saveMessages() { throw new Error("synthetic disk failure"); },
 		} as unknown as ChatStore;
 		const message = { role: "assistant", content: [{ type: "text", text: "Synthetic reply" }], stopReason: "stop", timestamp: 1 } as AgentMessage;
-		assert.throws(() => persistTurn(store, "fixture", 0, [message], false), /The reply could not be saved\./);
+		assert.throws(() => persistTurn(store, "fixture", 0, [message], false), /No se pudo guardar la respuesta\./);
 	});
 });

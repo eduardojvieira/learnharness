@@ -75,14 +75,14 @@ test("renderer controls route explicit account forgetting and account-independen
 	assert.deepEqual(await chatGPTControl({ op: "disconnect", id: "fixture-account" }, connection), { ok: true });
 	assert.deepEqual(await chatGPTControl({ op: "consent", enabled: false }, connection), { ok: true });
 	assert.deepEqual(forgotten, ["fixture-account"]); assert.deepEqual(changes, [false]);
-	for (const command of [{ op: "disconnect" }, { op: "disconnect", id: 7 }, { op: "consent", enabled: "false" }]) assert.deepEqual(await chatGPTControl(command, connection), { error: "Unsupported ChatGPT control." });
+	for (const command of [{ op: "disconnect" }, { op: "disconnect", id: 7 }, { op: "consent", enabled: "false" }]) assert.deepEqual(await chatGPTControl(command, connection), { error: "Operación de ChatGPT no compatible." });
 	assert.deepEqual(changes, [false]);
 });
 
 test("renderer controls have no lease or general token bridge, and require the trusted main frame", async () => {
 	let leased = false;
 	const connection = { lease: async () => { leased = true; return { accessToken: "scratch-private-token" }; } };
-	assert.deepEqual(await chatGPTControl({ op: "lease", background: false }, connection), { error: "Unsupported ChatGPT control." });
+	assert.deepEqual(await chatGPTControl({ op: "lease", background: false }, connection), { error: "Operación de ChatGPT no compatible." });
 	assert.equal(leased, false);
 	const { contents, mainFrame, win } = fixture();
 	const BrowserWindow = { fromWebContents: (value: unknown) => value === contents ? win : null };

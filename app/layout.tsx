@@ -15,12 +15,12 @@ const prose = Source_Sans_3({ subsets: ["latin"], variable: "--font-sans3" });
 
 export const metadata: Metadata = {
 	title: "Learning Harness",
-	description: "A teacher agent with a memory — sessions, quizzes, and a knowledge graph of what you know.",
+	description: "Un agente profesor con memoria — sesiones, cuestionarios y un grafo de conocimiento de lo que sabes.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en" className={`dark ${ui.variable} ${prose.variable}`}>
+		<html lang="es" className={`dark ${ui.variable} ${prose.variable}`}>
 			<body className="min-h-dvh antialiased">
 			{/* The notification channel rides OUTSIDE everything: sidebar, dock,
 				 and pages all subscribe as the polls retire (push S3, 2026-10-02). */}

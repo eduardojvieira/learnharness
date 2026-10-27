@@ -749,7 +749,7 @@ export function recoverStaleJobs(): void {
 				} else if (job.status === "running" && !job.result) {
 					// The sub-agent loop itself died with the process: re-spawn.
 					if (!s.respawn) continue;
-					stores.jobStore.updateJob(job.id, { activity: "recovering: re-running" });
+					stores.jobStore.updateJob(job.id, { activity: "recuperando: volviendo a ejecutar" });
 					s.respawn(job.id);
 				}
 			}

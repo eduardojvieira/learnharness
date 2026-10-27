@@ -39,7 +39,7 @@ export function NodePickerControl({ count, onOpen, onClear }: {
 				}
 			>
 				<DumbbellIcon aria-hidden="true" className="size-3.5 text-muted-foreground" />
-				{count > 0 ? `${count} ${count === 1 ? "node" : "nodes"} selected` : "Pick nodes"}
+				{count > 0 ? `${count} ${count === 1 ? "nodo seleccionado" : "nodos seleccionados"}` : "Elegir nodos"}
 			</button>
 			{count > 0 && (
 				<button
@@ -48,7 +48,7 @@ export function NodePickerControl({ count, onOpen, onClear }: {
 					onClick={onClear}
 					className="cursor-pointer rounded-full px-2 py-1 font-ui text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
 				>
-					Clear
+					Limpiar
 				</button>
 			)}
 		</div>

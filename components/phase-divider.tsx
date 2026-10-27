@@ -26,9 +26,9 @@ import type { Phase3 } from "@/src/core";
 
 /** Header-chip labels: the phases as the learner thinks of them. */
 const CHIP_LABEL: Record<Phase3, string> = {
-	probe: "Probing",
-	plan: "Planning",
-	teach: "Teaching",
+	probe: "Exploración",
+	plan: "Planificación",
+	teach: "Enseñanza",
 };
 
 /** The header label: the phase as a quiet flat tag (owner,
@@ -63,7 +63,7 @@ export function PhaseDivider({ phase, nodeCount }: { phase: Phase3; nodeCount?: 
 	if (phase === "probe") return null;
 	const label =
 		phase === "plan" && nodeCount
-			? `Plan · ${nodeCount} node${nodeCount === 1 ? "" : "s"}`
+			? `Plan · ${nodeCount} nodo${nodeCount === 1 ? "" : "s"}`
 			: CHIP_LABEL[phase];
 	return (
 		<div className="my-4 flex w-full items-center gap-3" data-testid={`phase-divider-${phase}`}>

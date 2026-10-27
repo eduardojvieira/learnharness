@@ -80,7 +80,7 @@ import type {CallUsage} from "../core/contracts.ts";
  */
 
 function settlementErrorText(error: unknown): string {
-	return error instanceof TurnPersistenceError ? error.message : "An error occurred.";
+	return error instanceof TurnPersistenceError ? error.message : "Ocurrió un error.";
 }
 
 const jobRunner = createJobRunner({
@@ -241,7 +241,7 @@ export async function handleChatInput(
 	};
 	let conversationEngine: PiEngine;
 	try { conversationEngine = piEngineForSpec(conversation, () => callPurpose.background, lifecycle); }
-	catch { return Response.json({ error: conversation.provider === "chatgpt" ? chatGPTStreamError("model catalog") : isSubscriptionProvider(conversation.provider) ? nativeSubscriptionError(conversation.provider, "model catalog") : "The selected model is unavailable." }, { status: 503 }); }
+	catch { return Response.json({ error: conversation.provider === "chatgpt" ? chatGPTStreamError("model catalog") : isSubscriptionProvider(conversation.provider) ? nativeSubscriptionError(conversation.provider, "model catalog") : "El modelo seleccionado no está disponible." }, { status: 503 }); }
 	const modelIdForCompaction = `${conversationEngine.model.provider}:${conversationEngine.model.id}`;
 	await ensureCompacted(
 		{
@@ -297,7 +297,7 @@ export async function handleChatInput(
 		try { stores.chatStore.saveMessages(chatId, merged); }
 		catch (err) {
 			console.error(`[chat ${chatId}] write-ahead persist failed:`, err);
-			return new Response("Your input could not be saved. Please try again.", { status: 500 });
+			return new Response("No se pudo guardar tu entrada. Inténtalo de nuevo.", { status: 500 });
 		}
 		emit("record-changed", { chatId });
 		return settledTurnResponse(); // the cheap terminal — no beginTurn, no turn
@@ -325,7 +325,7 @@ export async function handleChatInput(
 	} catch (err) {
 		console.error(`[chat ${chatId}] write-ahead persist failed:`, err);
 		endTurn(chatId);
-		return new Response("Your input could not be saved. Please try again.", { status: 500 });
+		return new Response("No se pudo guardar tu entrada. Inténtalo de nuevo.", { status: 500 });
 	}
 	// Visibility bookkeeping is not the canonical save. Its failure must
 	// neither misreport a saved input as lost nor prevent the turn running.
@@ -511,7 +511,7 @@ export async function handleChatInput(
 				if (conversation.provider === "chatgpt") return chatGPTStreamError(String(error));
 				if (isSubscriptionProvider(conversation.provider)) return nativeSubscriptionError(conversation.provider, String(error));
 				console.error(`[chat ${chatId}] turn error:`, error);
-				return "An error occurred.";
+				return "Ocurrió un error.";
 			},
 			onSettleError: settlementErrorText,
 			onSettleFailure: (error, reportedErrorText) => {
@@ -642,6 +642,6 @@ export async function handleChatInput(
 		// turn here too - nothing was handed (the loop never ticked).
 		unregisterLiveAgent(chatId);
 		console.error(`[chat ${chatId}] turn failed to start:`, err);
-		return Response.json({ error: "Failed to start the turn" }, { status: 500 });
+		return Response.json({ error: "No se pudo iniciar el turno" }, { status: 500 });
 	}
 }

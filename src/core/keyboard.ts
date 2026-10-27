@@ -55,36 +55,36 @@ export interface KeyActionDef {
 }
 
 export const KEYBOARD_ACTIONS: readonly KeyActionDef[] = [
-	{ id: "toggle-dictation", label: "Toggle dictation", scope: "global", binding: "mod+d" },
-	{ id: "open-settings", label: "Open settings", scope: "global", binding: "mod+," },
-	{ id: "open-model-picker", label: "Model selector", scope: "global", binding: "mod+k" },
-	{ id: "cycle-thinking", label: "Cycle thinking level", scope: "global", binding: "shift+tab" },
-	{ id: "toggle-sidebar", label: "Toggle sessions sidebar", scope: "global", binding: "mod+b" },
-	{ id: "sessions-search", label: "Search sessions", scope: "global", binding: "mod+shift+f" },
+	{ id: "toggle-dictation", label: "Activar o desactivar el dictado", scope: "global", binding: "mod+d" },
+	{ id: "open-settings", label: "Abrir la configuración", scope: "global", binding: "mod+," },
+	{ id: "open-model-picker", label: "Selector de modelo", scope: "global", binding: "mod+k" },
+	{ id: "cycle-thinking", label: "Cambiar el nivel de pensamiento", scope: "global", binding: "shift+tab" },
+	{ id: "toggle-sidebar", label: "Mostrar u ocultar la barra lateral de sesiones", scope: "global", binding: "mod+b" },
+	{ id: "sessions-search", label: "Buscar sesiones", scope: "global", binding: "mod+shift+f" },
 	// (The Alt+↑/↓/↵ session cycle was RETIRED, owner 2026-10-10: barely
 	// used, felt laggy. Session navigation lives IN the search now — ↑/↓
 	// walk the filtered list, Enter opens (first match when nothing
 	// walked) — see sidebar.tsx's search input.)
-	{ id: "jump-graph", label: "Graph view", scope: "global", binding: "mod+g" },
-	{ id: "new-session", label: "New session", scope: "global", binding: "mod+n" },
-	{ id: "rename-session", label: "Rename session", scope: "chat", binding: "f2" },
-	{ id: "toggle-user-thinking", label: "Toggle all your thinking", scope: "chat", binding: "mod+t" },
+	{ id: "jump-graph", label: "Vista del grafo", scope: "global", binding: "mod+g" },
+	{ id: "new-session", label: "Nueva sesión", scope: "global", binding: "mod+n" },
+	{ id: "rename-session", label: "Cambiar el nombre de la sesión", scope: "chat", binding: "f2" },
+	{ id: "toggle-user-thinking", label: "Mostrar u ocultar todo tu pensamiento", scope: "chat", binding: "mod+t" },
 	// Mod+F is surface-scoped: graph node search and session text Find share
 	// one action/binding. Only the currently mounted surface listens.
-	{ id: "find", label: "Find", scope: "global", binding: "mod+f" },
-	{ id: "cheat-sheet", label: "Shortcut cheat sheet", scope: "global", binding: "?" },
+	{ id: "find", label: "Buscar", scope: "global", binding: "mod+f" },
+	{ id: "cheat-sheet", label: "Guía rápida de atajos", scope: "global", binding: "?" },
 	// The question dock's row machine (wave B) — displayOnly: the dock owns
 	// the keys while a question is expanded; the registry never dispatches
 	// them, so bare arrows stay free everywhere else.
-	{ id: "question-focus", label: "Question · focus thinking ↔ rows", scope: "chat", binding: "tab", displayOnly: true },
+	{ id: "question-focus", label: "Pregunta · enfocar pensamiento ↔ filas", scope: "chat", binding: "tab", displayOnly: true },
 	// (The model-menu entries — "walk results" ↑/↓, "pick result" ↵ — were
 	// REMOVED, owner 2026-10-10: obvious in-field menu navigation, never
 	// dispatched, never rebindable — not settings material. The menu's own
 	// arrow machine (menu-shell.tsx) is unchanged.)
-	{ id: "question-next-row", label: "Question · next row", scope: "chat", binding: "arrowdown", displayOnly: true },
-	{ id: "question-prev-row", label: "Question · previous row", scope: "chat", binding: "arrowup", displayOnly: true },
-	{ id: "question-pick-row", label: "Question · pick row", scope: "chat", binding: "space", displayOnly: true },
-	{ id: "question-submit", label: "Question · submit", scope: "chat", binding: "enter", displayOnly: true },
+	{ id: "question-next-row", label: "Pregunta · fila siguiente", scope: "chat", binding: "arrowdown", displayOnly: true },
+	{ id: "question-prev-row", label: "Pregunta · fila anterior", scope: "chat", binding: "arrowup", displayOnly: true },
+	{ id: "question-pick-row", label: "Pregunta · elegir fila", scope: "chat", binding: "space", displayOnly: true },
+	{ id: "question-submit", label: "Pregunta · enviar", scope: "chat", binding: "enter", displayOnly: true },
 ];
 
 const STORAGE_KEY = "lh:keymap";

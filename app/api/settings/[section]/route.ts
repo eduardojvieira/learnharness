@@ -54,7 +54,7 @@ export async function PUT(request: Request, ctx: { params: Promise<{ section: st
 	const parser = (SETTINGS_SECTIONS as Record<string, AnySectionParser>)[section];
 	if (!parser) {
 		return Response.json(
-			{ error: `unknown settings section "${section}"`, supported: Object.keys(SETTINGS_SECTIONS) },
+			{ error: `sección de configuración desconocida "${section}"`, supported: Object.keys(SETTINGS_SECTIONS) },
 			{ status: 404 },
 		);
 	}

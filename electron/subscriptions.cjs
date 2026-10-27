@@ -8,15 +8,16 @@ const { PROVIDERS, fileStore, validateCredential, safeHttps, failure } = require
 const LABELS = { "github-copilot": "GitHub Copilot", xai: "Grok" };
 const APIS = new Set(["openai-responses", "openai-completions", "anthropic-messages"]);
 const clone = (value) => value === undefined ? undefined : JSON.parse(JSON.stringify(value));
+// refresh/background/stale stay English: src/agent/subscription-stream.ts classifies leased errors by these words.
 const MESSAGES = {
-	storage: "The saved connection could not be read or written safely. Reopen the app or reconnect after resolving the credential-file problem.",
-	login: "Sign-in did not complete. Try connecting again.",
+	storage: "No se pudo leer ni escribir la conexión guardada de forma segura. Vuelve a abrir la aplicación o vuelve a conectar después de resolver el problema del archivo de credenciales.",
+	login: "El inicio de sesión no se completó. Intenta conectarte de nuevo.",
 	refresh: "The connection could not be refreshed. Retry or reconnect in Providers.",
-	cancel: "Sign-in cancelled.",
-	unavailable: "This subscription connection is unavailable. Reconnect or explicitly choose another connection.",
+	cancel: "Se canceló el inicio de sesión.",
+	unavailable: "Esta conexión de suscripción no está disponible. Vuelve a conectar o elige explícitamente otra conexión.",
 	background: "Background use is off for this connection. Automatic follow-up remains deferred in its queue.",
 	stale: "The connection or model catalog changed. Select an available model and retry.",
-	interaction: "This sign-in action is no longer available.",
+	interaction: "Esta acción de inicio de sesión ya no está disponible.",
 };
 function publicError(error) { return MESSAGES[error?.code] ?? MESSAGES.unavailable; }
 /** Resolve the SAME SDK installation as the standalone server, through public exports. */
@@ -157,7 +158,7 @@ function createSubscriptions(options) {
 					if (event.type === "auth_url") addBrowser(event.url);
 					if (event.type === "device_code") { addBrowser(event.verificationUri); attempt.public.userCode = event.userCode; }
 					// Native provider diagnostics are never forwarded. Public prompt wording comes from SDK-owned prompts.
-					attempt.public.progress = event.type === "device_code" || event.type === "auth_url" ? "Complete sign-in in your browser." : "Waiting for the provider…";
+					attempt.public.progress = event.type === "device_code" || event.type === "auth_url" ? "Completa el inicio de sesión en tu navegador." : "Esperando al proveedor…";
 					changed(entry);
 				},
 				prompt: (prompt) => new Promise((resolve, reject) => {

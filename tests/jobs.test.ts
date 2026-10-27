@@ -1750,7 +1750,7 @@ describe("stale-job recovery sweep (liveness-gated)", () => {
 		resetSweepThrottle();
 		recoverStaleJobs();
 		assert.ok(respawnedIds.includes(jobId), "the orphan's loop is re-spawned at once");
-		assert.equal(jobStore.getJob(jobId)!.activity, "recovering: re-running");
+		assert.equal(jobStore.getJob(jobId)!.activity, "recuperando: volviendo a ejecutar");
 		// Hermetic teardown (see above) — the respawned loop is the TEST's
 		// fake seam, nothing real runs.
 		jobStore.updateJob(jobId, { status: "done", activity: "settled (test)" });

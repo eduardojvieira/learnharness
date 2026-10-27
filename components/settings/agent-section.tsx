@@ -54,7 +54,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MenuShell } from "@/components/menu-shell";
 import { useSettingsSaved } from "@/components/settings-signal";
-import { defaultOrderLevel, populateLevel } from "@/components/thinking-default";
+import { defaultOrderLevel, populateLevel, THINKING_LABEL } from "@/components/thinking-default";
 import type React from "react";
 import {
 	COMPACTION_THRESHOLD_FLOOR,
@@ -78,9 +78,9 @@ import { NativeSubscriptionBackgroundAccess } from "./subscription-connections";
 /** One slot's display identity — the tier's roster as the row hint rides
  *  with the resolved default (owner: the hint ALWAYS names the default). */
 const SLOT_META: Record<ModelSlotName, { label: string; roster: string }> = {
-	strong: { label: "Strong", roster: "The main model for your sessions" },
-	cheap: { label: "Cheap", roster: "The assistants that research, build demos, and grade your work" },
-	vision: { label: "Vision", roster: "The assistants that draw and read PDFs" },
+	strong: { label: "Potente", roster: "El modelo principal de tus sesiones" },
+	cheap: { label: "Económico", roster: "Los asistentes que investigan, crean demostraciones y califican tu trabajo" },
+	vision: { label: "Visión", roster: "Los asistentes que dibujan y leen PDF" },
 };
 
 /** The search engines this wave ships (src/core/search.ts) + their labels. */
@@ -178,7 +178,7 @@ export function composeSearchEngine(
  *  when the default composes, even if a saved override sits on disk
  *  unused. The switch's meaning becomes legible: it visibly controls
  *  this line). Exported for the pin. */
-export const PROMPT_IN_USE_HINT = "Your version is in use";
+export const PROMPT_IN_USE_HINT = "Tu versión está en uso";
 
 /** One section of the prompt view — the owner's ruled order: Teacher,
  *  Prober, then Shared last. */
@@ -202,12 +202,12 @@ export interface PromptSection {
 export function sectionedSegments(view: { prober: SegmentInfo[]; teacher: SegmentInfo[] }): PromptSection[] {
 	const own = (who: "prober" | "teacher") => view[who].filter((s) => !s.shared);
 	return [
-		{ id: "teacher", label: "Teacher", segments: own("teacher") },
-		{ id: "prober", label: "Prober", segments: own("prober") },
+		{ id: "teacher", label: "Profesor", segments: own("teacher") },
+		{ id: "prober", label: "Evaluador", segments: own("prober") },
 		{
 			id: "shared",
-			label: "Shared",
-			hint: "Used by both agents",
+			label: "Compartido",
+			hint: "Lo usan ambos agentes",
 			segments: view.teacher.filter((s) => s.shared),
 		},
 	];
@@ -437,11 +437,11 @@ export function AgentSection({
 			body: JSON.stringify({ text }),
 		});
 		if (!res.ok) {
-			setSegmentStatus(`Save failed: ${(await res.json().catch(() => ({}))).error ?? res.status}`);
+			setSegmentStatus(`Error al guardar: ${(await res.json().catch(() => ({}))).error ?? res.status}`);
 			return;
 		}
 		readPrompts();
-		setSegmentStatus("Saved");
+		setSegmentStatus("Guardado");
 		// Auto-on (owner ruling, refined 2026-09-26): writing an override and
 		// putting it to work are ONE action — a save with the switch off was
 		// the "did something, changed nothing" trap (the composed prompt
@@ -458,7 +458,7 @@ export function AgentSection({
 		setSegmentStatus(null);
 		const res = await fetch(`/api/settings/prompts/${path}`, { method: "DELETE" });
 		if (!res.ok) {
-			setSegmentStatus(`Delete failed: ${res.status}`);
+			setSegmentStatus(`Error al eliminar: ${res.status}`);
 			return;
 		}
 		// Auto-off — the mirror of save's auto-on: deleting the file while
@@ -470,7 +470,7 @@ export function AgentSection({
 			onSectionChange(composePromptSwitch(agent, path, false));
 		}
 		readPrompts();
-		setSegmentStatus("Deleted");
+		setSegmentStatus("Eliminado");
 	}
 
 		/** The search-engine menu row — label + the quiet live-key mark. */
@@ -492,7 +492,7 @@ export function AgentSection({
 		>
 			<span>{label}</span>
 			<span className="text-muted-foreground">
-				{live === null ? (active && <span aria-hidden>✓</span>) : live ? <span aria-hidden>✓ key</span> : <span aria-hidden>· no key</span>}
+				{live === null ? (active && <span aria-hidden>✓</span>) : live ? <span aria-hidden>✓ clave</span> : <span aria-hidden>· sin clave</span>}
 			</span>
 		</button>
 	);
@@ -540,26 +540,26 @@ export function AgentSection({
 					}}
 					className="text-xs text-muted-foreground/70 underline-offset-2 hover:text-foreground hover:underline"
 				>
-					{open ? "Hide text" : "Show text"}
+					{open ? "Ocultar texto" : "Mostrar texto"}
 				</button>
 				{open && (
 					<div className="mt-1 flex flex-col gap-2">
 						<div>
-							<p className="mb-1 text-xs uppercase tracking-widest text-muted-foreground/70">Source</p>
+							<p className="mb-1 text-xs uppercase tracking-widest text-muted-foreground/70">Original</p>
 							<textarea
 								readOnly
 								value={info.sourceText}
-								aria-label="The original instructions"
+								aria-label="Las instrucciones originales"
 								className="h-24 w-full resize-y rounded-sm border border-border bg-muted p-2 font-ui text-xs text-muted-foreground"
 							/>
 						</div>
 						<div>
-							<p className="mb-1 text-xs uppercase tracking-widest text-muted-foreground/70">Override</p>
+							<p className="mb-1 text-xs uppercase tracking-widest text-muted-foreground/70">Tu versión</p>
 							<textarea
 								value={segmentDraft[info.path] ?? info.overrideText ?? ""}
 								onChange={(e) => setSegmentDraft({ ...segmentDraft, [info.path]: e.target.value })}
-								aria-label="Your version of the instructions"
-								placeholder="Add your own instructions…"
+								aria-label="Tu versión de las instrucciones"
+								placeholder="Agrega tus propias instrucciones…"
 								className="h-24 w-full resize-y rounded-sm border border-border bg-background p-2 font-ui text-xs text-foreground outline-none"
 							/>
 						</div>
@@ -574,7 +574,7 @@ export function AgentSection({
 										: "cursor-not-allowed text-xs text-muted-foreground/40 underline-offset-2"
 								}
 							>
-								Save
+								Guardar
 							</button>
 							{fileExists && (
 								<button
@@ -582,7 +582,7 @@ export function AgentSection({
 									onClick={() => void deleteSegment(info.path)}
 									className="text-xs text-muted-foreground/70 underline-offset-2 hover:text-red-500 hover:underline"
 								>
-									Delete
+									Eliminar
 								</button>
 							)}
 							{/* The quiet inline confirmation — next to the
@@ -614,7 +614,7 @@ export function AgentSection({
 
 	return (
 		<>
-			<SettingsGroup label="Models" testid="group-models">
+			<SettingsGroup label="Modelos" testid="group-models">
 				{MODEL_SLOTS.map((slot) => {
 					const override = models?.[slot];
 					const modelId = override?.model?.id ?? "";
@@ -653,7 +653,7 @@ export function AgentSection({
 								<MenuTrigger
 									value={modelId ? prettyModel(modelId) : ""}
 									emptyLabel="—"
-									ariaLabel={`${SLOT_META[slot].label} model`}
+									ariaLabel={`Modelo ${SLOT_META[slot].label}`}
 									testid={`slot-model-${slot}`}
 									open={thisMenuOpen === "model"}
 									onClick={() => setOpenMenu(thisMenuOpen === "model" ? null : { target: slot, kind: "model" })}
@@ -663,13 +663,13 @@ export function AgentSection({
 									// Legacy display (chunk 2 item 4): no stored level + a known
 									// model → the RESOLVED level (the ordering's first supported —
 									// what the engine build runs). Display-only until a pick writes.
-									value={thinking || (chosen ? defaultOrderLevel(levels) : "")}
+									value={(() => { const level = thinking || (chosen ? defaultOrderLevel(levels) : ""); return THINKING_LABEL[level] ?? level; })()}
 									emptyLabel="—"
-									ariaLabel={`${SLOT_META[slot].label} thinking`}
+									ariaLabel={`Pensamiento ${SLOT_META[slot].label}`}
 									testid={`slot-thinking-${slot}`}
 									open={thisMenuOpen === "thinking"}
 									onClick={() => setOpenMenu(thisMenuOpen === "thinking" ? null : { target: slot, kind: "thinking" })}
-									widthClass="w-20"
+									widthClass="w-24"
 								/>
 								{thisMenuOpen === "model" && (
 									<MenuShell
@@ -692,8 +692,8 @@ export function AgentSection({
 											}}
 											footer={
 												catalog && catalog.length === 0
-													? "No models — add a provider key in Keys"
-													: "Runs every agent of this tier"
+													? "No hay modelos: agrega una clave de proveedor en Proveedores"
+													: "Ejecuta todos los agentes de este nivel"
 											}
 										/>
 									</MenuShell>
@@ -723,7 +723,7 @@ export function AgentSection({
 				})}
 			</SettingsGroup>
 
-			<SettingsGroup label="Tools" testid="group-tools">
+			<SettingsGroup label="Herramientas" testid="group-tools">
 				{/* The prober's graph tools (wave 7, owner ruling 2026-09-23):
 				    FIRST row of the group — its subject is the map, its
 				    mechanism is agent capability, so it lives in Tools but
@@ -735,15 +735,16 @@ export function AgentSection({
 					const graphOn = graph?.enabled ?? true;
 					return (
 						<SettingsRow
-							label="Graph tools"
-							hint={graphOn ? "Lets the tutor consult your knowledge map between sessions" : "Graph is disabled"}
+							label="Herramientas del grafo"
+							hint={graphOn ? "Permite que el tutor consulte tu mapa de conocimiento entre sesiones" : "El grafo está desactivado"}
 							testid="graph-tools-row"
 							dimmed={!graphOn}
 						>
 							<Toggle
 								checked={agent?.graphTools?.enabled ?? true}
 								disabled={!graphOn}
-								label="graph tools"
+								label="herramientas del grafo"
+								testid="toggle-graph-tools"
 								onChange={(on) => onSectionChange(composeGraphTools(agent, on))}
 							/>
 						</SettingsRow>
@@ -757,13 +758,13 @@ export function AgentSection({
 					const free = agent?.tools?.explain === true;
 					return (
 						<SettingsRow
-							label="Quizzing"
-							hint="How both tutors check your understanding"
+							label="Cuestionarios"
+							hint="Cómo comprueban ambos tutores tu comprensión"
 							testid="quiz-mechanics-row"
 						>
 							<div
 								role="radiogroup"
-								aria-label="Quizzing mechanics"
+								aria-label="Mecánica de los cuestionarios"
 								className="flex rounded-lg border border-border/60 bg-muted/30 p-0.5"
 								>
 								{(["choice", "free"] as const).map((m) => {
@@ -781,7 +782,7 @@ export function AgentSection({
 												active ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground",
 											)}
 										>
-											{m === "choice" ? "Multiple choice" : "Free recall"}
+											{m === "choice" ? "Opción múltiple" : "Respuesta libre"}
 										</button>
 									);
 								})}
@@ -792,12 +793,13 @@ export function AgentSection({
 				{TOGGLE_TOOLS.map((id) => (
 					<SettingsRow
 						key={id}
-						label={`Tool · ${id}`}
+						label={`Herramienta · ${id}`}
 						testid={`tool-row-${id}`}
 					>
 						<Toggle
 							checked={agent?.tools?.[id] ?? true}
-							label={`tool ${id}`}
+							label={`herramienta ${id}`}
+							testid={`toggle-tool-${id}`}
 							onChange={(on) => onSectionChange(composeTool(agent, id, on))}
 						/>
 					</SettingsRow>
@@ -808,7 +810,7 @@ export function AgentSection({
 					const open = openMenu?.target === "search";
 					return (
 						<SettingsRow
-							label="Search engine"
+							label="Motor de búsqueda"
 							hint={search?.reason ?? undefined}
 							testid="search-engine-row"
 							dimmed={!anyKey}
@@ -816,8 +818,8 @@ export function AgentSection({
 							<span ref={open ? menuAnchorRef : undefined} className="relative flex items-center gap-2">
 								<MenuTrigger
 									value={engine === "tavily" ? "Tavily" : engine === "brave" ? "Brave" : ""}
-									emptyLabel="Automatic"
-									ariaLabel="Search engine"
+									emptyLabel="Automático"
+									ariaLabel="Motor de búsqueda"
 									testid="search-engine-trigger"
 									open={open}
 									onClick={() => setOpenMenu(open ? null : { target: "search", kind: "engine" })}
@@ -831,7 +833,7 @@ export function AgentSection({
 										testid="search-engine-menu"
 										menuClass="flex w-44 flex-col gap-0.5 rounded-xl border border-border bg-card p-2 text-xs shadow-xl"
 									>
-										{engineOption("auto", "Automatic", engine === null, null, () => {
+										{engineOption("auto", "Automático", engine === null, null, () => {
 											onSectionChange(composeSearchEngine(agent, null));
 											setOpenMenu(null);
 										})}
@@ -849,9 +851,9 @@ export function AgentSection({
 				})()}
 			</SettingsGroup>
 
-			<SettingsGroup label="Context" testid="group-context">
+			<SettingsGroup label="Contexto" testid="group-context">
 				<SettingsRow
-					label="Compaction threshold"
+					label="Umbral de compactación"
 					hint={`${resolvedCompaction.thresholdTokens} tok`}
 					testid="compaction-row-threshold"
 				>
@@ -859,7 +861,7 @@ export function AgentSection({
 						type="number"
 						value={String(compaction?.thresholdTokens ?? "")}
 						placeholder={String(resolvedCompaction.thresholdTokens)}
-						ariaLabel="compaction threshold"
+						ariaLabel="umbral de compactación"
 						testid="input-compaction-threshold"
 						onCommit={(v) => {
 							// Empty = factory default (the budget row's discipline):
@@ -882,9 +884,9 @@ export function AgentSection({
 				</SettingsRow>
 			</SettingsGroup>
 
-			<SettingsGroup label="System prompts" testid="group-prompts">
+			<SettingsGroup label="Prompts del sistema" testid="group-prompts">
 				{prompts === null ? (
-					<p className="text-xs text-muted-foreground/70">Loading prompt segments…</p>
+					<p className="text-xs text-muted-foreground/70">Cargando segmentos del prompt…</p>
 				) : (
 					<div className="flex flex-col gap-4">
 						{/* The owner's ruled order (2026-09-26): Teacher first,

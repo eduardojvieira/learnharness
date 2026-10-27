@@ -804,21 +804,21 @@ describe("session deletion (deleteChatTraces + deleteChatSession, wave 6)", () =
 
 	it("deleteChatSession: the orchestration's gates and the sync block", async () => {
 		// 404 — unknown chat.
-		assert.deepEqual(await deleteChatSession("chat_missing_delete", "delete-nodes"), { ok: false, status: 404, code: "not_found", error: "No such session" });
+		assert.deepEqual(await deleteChatSession("chat_missing_delete", "delete-nodes"), { ok: false, status: 404, code: "not_found", error: "No existe esa sesión" });
 
 		const { dA } = buildTwoSessionScenario();
 		// 409 — a turn in flight.
 		beginTurn(dA.id);
 		const turnedAway = await deleteChatSession(dA.id, "delete-nodes");
-		assert.deepEqual(turnedAway, { ok: false, status: 409, code: "turn_in_flight", error: "A turn is running in this session — try again when it finishes", jobIds: [] });
+		assert.deepEqual(turnedAway, { ok: false, status: 409, code: "turn_in_flight", error: "Hay un turno en curso en esta sesión — inténtalo de nuevo cuando termine", jobIds: [] });
 		endTurn(dA.id);
 		// 409 — running background jobs; a refused delete keeps its notice.
-		rememberTurnFailure(dA.id, "The reply could not be saved.");
+		rememberTurnFailure(dA.id, "No se pudo guardar la respuesta.");
 		const job = jobStore.createJob({ kind: "research", chatId: dA.id, toolCallId: "del-call-1" });
 		const jobsBlocked = await deleteChatSession(dA.id, "delete-nodes");
 		assert.ok(!jobsBlocked.ok && jobsBlocked.status === 409, "refused with 409");
 		if (jobsBlocked.code === "jobs_running") assert.deepEqual(jobsBlocked.jobIds, [job.id]);
-		assert.match(await settledTurnResponse(dA.id).text(), /The reply could not be saved\./);
+		assert.match(await settledTurnResponse(dA.id).text(), /No se pudo guardar la respuesta\./);
 		assert.equal(jobStore.deleteJobsForChat(dA.id), 1, "test cleanup — the job file is gone");
 
 		// Success — a terminal job rides along; the chat record dies last.
@@ -836,7 +836,7 @@ describe("session deletion (deleteChatTraces + deleteChatSession, wave 6)", () =
 		assert.doesNotMatch(await settledTurnResponse(dA.id).text(), /"type":"error"/, "deletion clears its transient notice");
 		assert.equal(jobStore.getJob(doneJob.id), null, "the chat's job records are gone");
 		// And a second call is an honest 404.
-		assert.deepEqual(await deleteChatSession(dA.id, "delete-nodes"), { ok: false, status: 404, code: "not_found", error: "No such session" });
+		assert.deepEqual(await deleteChatSession(dA.id, "delete-nodes"), { ok: false, status: 404, code: "not_found", error: "No existe esa sesión" });
 	});
 });
 
@@ -940,7 +940,7 @@ describe("single-node deletion (deleteNodeTraces + deleteGraphNode, node interlu
 			ok: false,
 			status: 404,
 			code: "not_found",
-			error: "No such node",
+			error: "No existe ese nodo",
 		});
 
 		// 409 — ANY registered extraction run: a mid-flight run could
@@ -985,7 +985,7 @@ describe("single-node deletion (deleteNodeTraces + deleteGraphNode, node interlu
 		assert.ok(outcome.graphRevision >= revisionBefore, "the version stamp moved");
 		assert.equal(graphStore.readNodes().some((n) => n.id === "n_orch"), false);
 		// And a second call is an honest 404.
-		assert.deepEqual(deleteGraphNode("n_orch"), { ok: false, status: 404, code: "not_found", error: "No such node" });
+		assert.deepEqual(deleteGraphNode("n_orch"), { ok: false, status: 404, code: "not_found", error: "No existe ese nodo" });
 	});
 });
 

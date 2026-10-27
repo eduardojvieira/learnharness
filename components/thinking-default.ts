@@ -21,13 +21,13 @@ import type { ThinkingLevel } from "@earendil-works/pi-agent-core";
  *  raw, so the composer pill and setup dialog must match, never Title
  *  Case. */
 export const THINKING_LABEL: Record<string, string> = {
-	off: "off",
-	minimal: "minimal",
-	low: "low",
-	medium: "medium",
-	high: "high",
-	xhigh: "xhigh",
-	max: "max",
+	off: "desactivado",
+	minimal: "mínimo",
+	low: "bajo",
+	medium: "medio",
+	high: "alto",
+	xhigh: "muy alto",
+	max: "máximo",
 };
 
 /** The level a fresh pick of `supported` populates with. Empty support

@@ -38,7 +38,7 @@ export function SubagentSteerCard({ message }: { message: LhViewMessage }) {
 		if (aborted?.data) return <AbortedBadge kind={aborted.data.kind ?? "job"} />;
 		return (
 				<div className="rounded-xl border bg-card p-4 text-sm text-muted-foreground">
-				A sub-agent finished, but its result could not be displayed.
+				Un subagente terminó, pero no se pudo mostrar su resultado.
 			</div>
 		);
 	}
@@ -62,6 +62,15 @@ export function SubagentSteerCard({ message }: { message: LhViewMessage }) {
 	}
 }
 
+/** Display names for the aborted chip's job kind (unknown kinds show raw). */
+const ABORTED_KIND_LABEL: Record<string, string> = {
+	research: "investigación",
+	demo: "demostración",
+	visual: "visual",
+	pdf: "PDF",
+	job: "tarea",
+};
+
 /** The aborted-job chip: mirrors the complete-badge one-liner — the
  * teacher's wake turn acknowledges the abort in the lesson itself,
  * this just marks what happened. */
@@ -69,8 +78,8 @@ function AbortedBadge({ kind }: { kind: string }) {
 	return (
 		<div data-testid="job-aborted-badge" className="flex items-center gap-2 text-xs text-muted-foreground">
 			<CircleX className="size-3.5" />
-			<span className="font-medium uppercase tracking-wide">{kind}</span>
-			<span>aborted by the learner</span>
+			<span className="font-medium uppercase tracking-wide">{ABORTED_KIND_LABEL[kind] ?? kind}</span>
+			<span>cancelaste esta tarea</span>
 		</div>
 	);
 }
@@ -88,14 +97,14 @@ function PdfCompleteBadge({ result }: { result: PdfResult }) {
 			<summary className="flex cursor-pointer select-none list-none items-center gap-2 [&::-webkit-details-marker]:hidden">
 				<CheckIcon className="size-3.5" />
 				<span className="font-medium uppercase tracking-wide">PDF</span>
-				<span>reading complete</span>
+				<span>lectura completa</span>
 				{readPages.length > 0 && (
 					<span>
-						· read {readPages.length} page{readPages.length === 1 ? "" : "s"}
+						· {readPages.length} {readPages.length === 1 ? "página leída" : "páginas leídas"}
 					</span>
 				)}
-				<span className="ml-1 text-xs text-muted-foreground/70 group-open:hidden">view brief</span>
-				<span className="ml-1 hidden text-xs text-muted-foreground/70 group-open:inline">hide brief</span>
+				<span className="ml-1 text-xs text-muted-foreground/70 group-open:hidden">ver resumen</span>
+				<span className="ml-1 hidden text-xs text-muted-foreground/70 group-open:inline">ocultar resumen</span>
 			</summary>
 			<div className="mt-2">
 				<PdfBriefCard output={result} />
@@ -114,11 +123,11 @@ function ResearchCompleteBadge({ result }: { result: ResearchResult }) {
 		<details data-testid="research-complete-badge" className="group w-full text-xs text-muted-foreground">
 			<summary className="flex cursor-pointer select-none list-none items-center gap-2 [&::-webkit-details-marker]:hidden">
 				<CheckIcon className="size-3.5" />
-				<span className="font-medium uppercase tracking-wide">Research</span>
-				<span>complete</span>
-				{result.sources.length > 0 && <span>· {result.sources.length} sources</span>}
-				<span className="ml-1 text-xs text-muted-foreground/70 group-open:hidden">view brief</span>
-				<span className="ml-1 hidden text-xs text-muted-foreground/70 group-open:inline">hide brief</span>
+				<span className="font-medium uppercase tracking-wide">Investigación</span>
+				<span>completa</span>
+				{result.sources.length > 0 && <span>· {result.sources.length} {result.sources.length === 1 ? "fuente" : "fuentes"}</span>}
+				<span className="ml-1 text-xs text-muted-foreground/70 group-open:hidden">ver resumen</span>
+				<span className="ml-1 hidden text-xs text-muted-foreground/70 group-open:inline">ocultar resumen</span>
 			</summary>
 			<div className="mt-2">
 				<ResearchBriefCard output={result} />

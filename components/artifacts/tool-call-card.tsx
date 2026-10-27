@@ -52,7 +52,7 @@ function outputText(output: unknown): string | null {
 		const o = output as { text?: unknown; images?: unknown[] };
 		const text = typeof o.text === "string" ? o.text : null;
 		const n = Array.isArray(o.images) ? o.images.length : 0;
-		return n > 0 ? `${text ?? ""}\n[${n} image${n > 1 ? "s" : ""} attached to the model]`.trim() : text;
+		return n > 0 ? `${text ?? ""}\n[${n} ${n > 1 ? "imágenes adjuntas" : "imagen adjunta"} al modelo]`.trim() : text;
 	}
 	try {
 		return JSON.stringify(output, null, 2);
@@ -84,7 +84,7 @@ export function ToolCallCard({ part }: ArtifactPartProps) {
 				{p.input != null && (
 					<div>
 						<div className="mb-1 font-medium uppercase tracking-wide text-muted-foreground">
-							Input
+							Entrada
 						</div>
 						<pre className="max-h-32 overflow-auto whitespace-pre-wrap break-all font-mono text-[11px] leading-relaxed">
 							{JSON.stringify(p.input, null, 2)}
@@ -103,7 +103,7 @@ export function ToolCallCard({ part }: ArtifactPartProps) {
 				) : out != null ? (
 					<div>
 						<div className="mb-1 font-medium uppercase tracking-wide text-muted-foreground">
-							Output
+							Salida
 						</div>
 						<pre className="max-h-64 overflow-auto whitespace-pre-wrap break-all font-mono text-[11px] leading-relaxed">
 							{out}
@@ -111,7 +111,7 @@ export function ToolCallCard({ part }: ArtifactPartProps) {
 					</div>
 				) : (
 					p.state !== "output-available" && (
-						<div className="text-muted-foreground italic">running…</div>
+						<div className="text-muted-foreground italic">en ejecución…</div>
 					)
 				)}
 			</div>

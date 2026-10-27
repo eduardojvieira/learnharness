@@ -588,7 +588,7 @@ function installMenu() {
 			submenu: [
 				{ role: "about" },
 				// Manual checks report their result in Settings → General.
-				{ label: "Check for Updates…", click: () => checkForUpdatesFromMenu() },
+				{ label: "Buscar actualizaciones…", click: () => checkForUpdatesFromMenu() },
 				{ type: "separator" },
 				{ role: "hide" },
 				{ role: "hideOthers" },
@@ -596,9 +596,9 @@ function installMenu() {
 				{ role: "quit" },
 			],
 		},
-		{ label: "Edit", submenu: [{ role: "undo" }, { role: "redo" }, { type: "separator" }, { role: "cut" }, { role: "copy" }, { role: "paste" }, { role: "selectAll" }] },
+		{ label: "Edición", submenu: [{ role: "undo" }, { role: "redo" }, { type: "separator" }, { role: "cut" }, { role: "copy" }, { role: "paste" }, { role: "selectAll" }] },
 		{
-			label: "View",
+			label: "Ver",
 			submenu: [
 				{ role: "reload" },
 				{ role: "toggleDevTools" },
@@ -608,17 +608,17 @@ function installMenu() {
 				// traffic lights. The renderer's --lh-zoom depends on
 				// hearing every change.
 				{
-					label: "Actual Size",
+					label: "Tamaño real",
 					accelerator: "CommandOrControl+0",
 					click: () => applyZoom(BrowserWindow.getAllWindows()[0], 1),
 				},
 				{
-					label: "Zoom In",
+					label: "Ampliar",
 					accelerator: "CommandOrControl+Plus",
 					click: () => zoomStep(BrowserWindow.getAllWindows()[0], +1),
 				},
 				{
-					label: "Zoom Out",
+					label: "Reducir",
 					accelerator: "CommandOrControl+-",
 					click: () => zoomStep(BrowserWindow.getAllWindows()[0], -1),
 				},
@@ -688,7 +688,7 @@ async function main() {
 	// Renderer controls contain no token/URL/code operation. The separate server
 	// child is the only recipient of credential leases over inherited IPC.
 	ipcMain.handle("lh:chatgpt:control", async (event, command) => {
-		if (!trustedAppWindows.has(BrowserWindow.fromWebContents(event.sender)) || !trustedSender(event, new URL(url).origin, BrowserWindow)) return { error: "Untrusted desktop request." };
+		if (!trustedAppWindows.has(BrowserWindow.fromWebContents(event.sender)) || !trustedSender(event, new URL(url).origin, BrowserWindow)) return { error: "Solicitud de escritorio no confiable." };
 		if (!chatgpt || !serverProcess?.connected) return { available: false, pending: false, activeId: null, accounts: [], error: "ChatGPT sign-in requires the desktop app's private server connection. Browser-only and externally launched development servers keep API-key connections." };
 		return chatGPTControl(command, chatgpt);
 	});

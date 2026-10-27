@@ -152,12 +152,12 @@ export function validateKeyShape(id: string, rawValue: string): KeyShapeResult {
 	const nonEmpty = (min: number) =>
 		value.length >= min && !/\s/.test(value)
 			? { ok: true as const }
-			: { ok: false as const, error: `${id} must be at least ${min} characters with no whitespace` };
+			: { ok: false as const, error: `${id} debe tener al menos ${min} caracteres y ningún espacio en blanco` };
 	switch (id) {
 		case "TAVILY_API_KEY":
 			return value.startsWith("tvly-")
 				? nonEmpty(20)
-				: { ok: false, error: `${id} must start with "tvly-" (Tavily's key format)` };
+				: { ok: false, error: `${id} debe empezar con "tvly-" (el formato de clave de Tavily)` };
 		case "BRAVE_API_KEY":
 			// No public format — a length floor + paste hygiene only.
 			return nonEmpty(20);
@@ -165,7 +165,7 @@ export function validateKeyShape(id: string, rawValue: string): KeyShapeResult {
 			// No public format — the length floor only catches truncated pastes.
 			return nonEmpty(20);
 		default:
-			return { ok: false, error: `unknown key "${id}" (supported: ${[...AUTH_KEY_IDS].join(", ")})` };
+			return { ok: false, error: `clave desconocida "${id}" (admitidas: ${[...AUTH_KEY_IDS].join(", ")})` };
 	}
 }
 
@@ -174,7 +174,7 @@ export function validateKeyShape(id: string, rawValue: string): KeyShapeResult {
 export function genericProviderKeyGuard(id: string, rawValue: string): KeyShapeResult {
 	const value = rawValue.trim();
 	if (value.length >= 12 && !/\s/.test(value)) return { ok: true };
-	return { ok: false, error: `${id} must be at least 12 characters with no whitespace` };
+	return { ok: false, error: `${id} debe tener al menos 12 caracteres y ningún espacio en blanco` };
 }
 
 /** A masked key never leaves the server as plaintext (owner decision:

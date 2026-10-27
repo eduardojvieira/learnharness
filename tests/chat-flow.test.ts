@@ -868,8 +868,8 @@ describe("canonical persistence failures", () => {
 			assert.equal(res.status, 500);
 			const client = new SessionModel({ chatId: chat.id, initialMessages: before, fetch: async () => res.clone() });
 			await client.submitAnswer("quiz", "call-1", gradedAnswer(QUIZ_INPUT, ["Mercury"]));
-			assert.equal(client.getState().error?.message, "Your input could not be saved. Please try again.");
-			assert.equal(await res.text(), "Your input could not be saved. Please try again.");
+			assert.equal(client.getState().error?.message, "No se pudo guardar tu entrada. Inténtalo de nuevo.");
+			assert.equal(await res.text(), "No se pudo guardar tu entrada. Inténtalo de nuevo.");
 			assert.equal(builds, 0);
 			assert.equal(isTurnRunning(chat.id), false);
 			assert.equal(runningTurn(chat.id), undefined);
@@ -892,15 +892,15 @@ describe("canonical persistence failures", () => {
 			const body = await drainTurn(post(chat.id, { type: "answer", toolCallId: "call-1", answer: gradedAnswer(QUIZ_INPUT, ["Mercury"]) }), agentFactory(engine));
 			const errors = eventsOf(body).filter(e => e.type === "error");
 			assert.equal(errors.length, 1);
-			assert.equal(errors[0]!.errorText, "The reply could not be saved.");
-			assert.ok(body.indexOf("The reply could not be saved.") < body.indexOf("[DONE]"));
+			assert.equal(errors[0]!.errorText, "No se pudo guardar la respuesta.");
+			assert.ok(body.indexOf("No se pudo guardar la respuesta.") < body.indexOf("[DONE]"));
 			assert.equal(isTurnRunning(chat.id), false);
 			assert.equal(runningTurn(chat.id), undefined);
 			assert.equal(chatStore.getChat(chat.id)!.messages.at(-1)?.role, "toolResult");
 			// The normal submitter may not reach GET /stream until AFTER the
 			// failing turn has left the live registry. It must still see it.
 			const late = await streamRoute.GET(new Request("http://test/stream"), { params: Promise.resolve({ id: chat.id }) });
-			assert.equal(eventsOf(await late.text()).find(e => e.type === "error")?.errorText, "The reply could not be saved.");
+			assert.equal(eventsOf(await late.text()).find(e => e.type === "error")?.errorText, "No se pudo guardar la respuesta.");
 			// An already-open idle view can miss both the start and the wire
 			// error, then learn of settlement only via a record synchronization.
 			const snapshot = await (await recordRoute.GET(new Request("http://test/record"), { params: Promise.resolve({ id: chat.id }) })).json();
@@ -913,7 +913,7 @@ describe("canonical persistence failures", () => {
 			missedView.setMessages(snapshot.messages, snapshot.turnError);
 			await missedView.continueIfOwed(snapshot.messages);
 			assert.equal(automaticPosts, 0, "the record notice must block replacement even without a stream attachment");
-			assert.equal(missedView.getState().error?.message, "The reply could not be saved.");
+			assert.equal(missedView.getState().error?.message, "No se pudo guardar la respuesta.");
 		} finally { chatStore.saveMessages = save; }
 	});
 
@@ -932,7 +932,7 @@ describe("canonical persistence failures", () => {
 				});
 				return agent;
 			});
-			assert.equal(eventsOf(body).find(e => e.type === "error")?.errorText, "An error occurred.");
+			assert.equal(eventsOf(body).find(e => e.type === "error")?.errorText, "Ocurrió un error.");
 			assert.ok(chatStore.getChat(chat.id)!.messages.some(m => m.id === steer.id), "the steer was saved before bookkeeping failed");
 			const delivered: LhMessage[] = [];
 			const next = { steer: (message: LhMessage) => delivered.push(message), state: { model: { provider: "faux" } } } as unknown as Parameters<typeof registerLiveAgent>[1];

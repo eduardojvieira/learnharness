@@ -157,7 +157,7 @@ function CheatSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
 	const scopeLabels: Record<(typeof scopes)[number], string> = {
 		global: "Global",
 		chat: "Chat",
-		graph: "Graph view",
+		graph: "Vista del grafo",
 	};
 	return (
 		<div
@@ -170,8 +170,8 @@ function CheatSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
 				onClick={(e) => e.stopPropagation()}
 			>
 				<div className="mb-4 flex items-baseline justify-between">
-					<span className="text-sm font-medium text-card-foreground">Keyboard shortcuts</span>
-					<span className="text-xs text-muted-foreground">Esc to close</span>
+					<span className="text-sm font-medium text-card-foreground">Atajos de teclado</span>
+					<span className="text-xs text-muted-foreground">Esc para cerrar</span>
 				</div>
 				{scopes.map((scope) => {
 					const actions = KEYBOARD_ACTIONS.filter((a) => a.scope === scope);

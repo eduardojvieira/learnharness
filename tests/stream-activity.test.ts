@@ -20,25 +20,25 @@ function toolPart(tool: string, state: string) {
 
 describe("streamingToolActivity (the turn-activity label)", () => {
 	it("question tools keep their question shimmer", () => {
-		assert.equal(streamingToolActivity([msg("assistant", [toolPart("quiz", "input-streaming")])]), "Writing a question…");
+		assert.equal(streamingToolActivity([msg("assistant", [toolPart("quiz", "input-streaming")])]), "Escribiendo una pregunta…");
 		assert.equal(
 			streamingToolActivity([msg("assistant", [toolPart("ask_user_question", "input-streaming")])]),
-			"Writing a question…",
+			"Escribiendo una pregunta…",
 		);
 	});
 
 	it("local tools name their actual activity", () => {
-		assert.equal(streamingToolActivity([msg("assistant", [toolPart("grep", "input-streaming")])]), "Searching file contents…");
-		assert.equal(streamingToolActivity([msg("assistant", [toolPart("read", "input-streaming")])]), "Reading a file…");
-		assert.equal(streamingToolActivity([msg("assistant", [toolPart("find", "input-streaming")])]), "Finding files…");
-		assert.equal(streamingToolActivity([msg("assistant", [toolPart("ls", "input-streaming")])]), "Listing a directory…");
+		assert.equal(streamingToolActivity([msg("assistant", [toolPart("grep", "input-streaming")])]), "Buscando en el contenido de los archivos…");
+		assert.equal(streamingToolActivity([msg("assistant", [toolPart("read", "input-streaming")])]), "Leyendo un archivo…");
+		assert.equal(streamingToolActivity([msg("assistant", [toolPart("find", "input-streaming")])]), "Buscando archivos…");
+		assert.equal(streamingToolActivity([msg("assistant", [toolPart("ls", "input-streaming")])]), "Listando un directorio…");
 	});
 
 	it("job dispatch tools get their own labels; unknown tools stay generic", () => {
-		assert.equal(streamingToolActivity([msg("assistant", [toolPart("pdf", "input-streaming")])]), "Reading a PDF…");
+		assert.equal(streamingToolActivity([msg("assistant", [toolPart("pdf", "input-streaming")])]), "Leyendo un PDF…");
 		assert.equal(
 			streamingToolActivity([msg("assistant", [toolPart("mystery_tool", "input-streaming")])]),
-			"Working…",
+			"Trabajando…",
 		);
 	});
 
@@ -54,6 +54,6 @@ describe("streamingToolActivity (the turn-activity label)", () => {
 	it("the SECOND streaming part wins only if the first settles — parts scan forward", () => {
 		// A settled call followed by a live one: the live one is the activity.
 		const parts = [toolPart("read", "output-available"), toolPart("grep", "input-streaming")];
-		assert.equal(streamingToolActivity([msg("assistant", parts)]), "Searching file contents…");
+		assert.equal(streamingToolActivity([msg("assistant", parts)]), "Buscando en el contenido de los archivos…");
 	});
 });

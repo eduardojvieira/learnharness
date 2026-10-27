@@ -230,10 +230,10 @@ export function validateChatSettings(settings: ChatSettings): SettingsValidation
 	if (settings.model) {
 		const { provider, id } = settings.model;
 		if (!providers.includes(provider)) {
-			return { ok: false, error: `Unknown provider "${provider}" — configured: ${providers.join(", ")}` };
+			return { ok: false, error: `Proveedor desconocido "${provider}" — configurados: ${providers.join(", ")}` };
 		}
 		if (!connectionModel(provider, id)) {
-			return { ok: false, error: `No model "${id}" in the ${provider} catalog` };
+			return { ok: false, error: `No existe el modelo "${id}" en el catálogo de ${provider}` };
 		}
 	}
 	// BYOK interlude (owner, 2026-09-22): thinking levels NEVER reject a
@@ -260,10 +260,10 @@ function validateSlotSpec(name: ModelSlotName, slot: { model?: { provider: strin
 	if (slot.model) {
 		const { provider, id } = slot.model;
 		if (!providers.includes(provider)) {
-			return { ok: false, error: `Unknown provider "${provider}" — configured: ${providers.join(", ")}` };
+			return { ok: false, error: `Proveedor desconocido "${provider}" — configurados: ${providers.join(", ")}` };
 		}
 		if (!connectionModel(provider, id)) {
-			return { ok: false, error: `No model "${id}" in the ${provider} catalog` };
+			return { ok: false, error: `No existe el modelo "${id}" en el catálogo de ${provider}` };
 		}
 	}
 	// BYOK interlude (owner, 2026-09-22): the supported-level verdict is

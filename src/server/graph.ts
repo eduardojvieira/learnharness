@@ -114,7 +114,7 @@ export function deleteGraphNode(nodeId: string): NodeDeleteOutcome {
 	// rewrite are one atomic stretch of the event loop.
 	const stats = deleteNodeTraces(stores.graphStore, nodeId);
 	if (stats === null) {
-		return { ok: false, status: 404, code: "not_found", error: "No such node" };
+		return { ok: false, status: 404, code: "not_found", error: "No existe ese nodo" };
 	}
 	return { ok: true, stats, graphRevision: graphRevision() };
 }

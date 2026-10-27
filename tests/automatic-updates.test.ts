@@ -116,7 +116,7 @@ function fixture({ packaged = true, updaterMissing = false } = {}) {
 		window: () => new FakeWindow(),
 		state: () => JSON.parse(JSON.stringify(run("updateState"))),
 		check: async (manual = false) => { run(`checkForUpdates({ manual: ${manual} })`); await Promise.resolve(); await Promise.resolve(); },
-		menuCheck: () => menu[0]!.submenu!.find(item => item.label === "Check for Updates…")!.click!(),
+		menuCheck: () => menu[0]!.submenu!.find(item => item.label === "Buscar actualizaciones…")!.click!(),
 	};
 }
 

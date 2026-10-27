@@ -89,12 +89,15 @@ export function Toggle({
 	label,
 	discIcon,
 	title,
+	testid,
 }: {
 	checked: boolean;
 	disabled?: boolean;
 	onChange: (next: boolean) => void;
 	/** Accessible name for the switch role. */
 	label: string;
+	/** Explicit data-testid; defaults to one derived from the label. */
+	testid?: string;
 	/** Optional icon disc (owner round, 2026-10-07): the figure cards' invert
 	 *  toggle renders the half-filled contrast circle AS the disc — the icon
 	 *  carries the meaning; plain toggles keep the plain disc. */
@@ -110,7 +113,7 @@ export function Toggle({
 			aria-label={label}
 			{...(title ? { title } : {})}
 			disabled={disabled}
-			data-testid={`toggle-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+			data-testid={testid ?? `toggle-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
 			onClick={() => onChange(!checked)}
 			className={cn(
 				"relative h-4.5 w-8 shrink-0 rounded-full border border-border transition-colors",

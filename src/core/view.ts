@@ -102,7 +102,7 @@ function applyResult(part: LhViewPart, result: ToolResultMessage): void {
 		part.state = "output-error";
 		part.rawInput = part.input;
 		const text = result.content.find((c) => c.type === "text");
-		part.errorText = text && text.type === "text" ? text.text : "The tool call failed.";
+		part.errorText = text && text.type === "text" ? text.text : "La llamada a la herramienta falló.";
 	} else {
 		part.state = "output-available";
 		part.output = result.details;
@@ -320,7 +320,7 @@ function toolPartOf(
 			// crash: a malformed quiz must never mount).
 			part.state = "output-error";
 			part.rawInput = block.arguments;
-			part.errorText = exec.errorText ?? "The tool call failed.";
+			part.errorText = exec.errorText ?? "La llamada a la herramienta falló.";
 		} else if (isQuestion) {
 			// Fork 2: the clean "Question posed" placeholder is IGNORED —
 			// question tools are client-owned; the dock mounts on the clean

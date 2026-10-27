@@ -1238,8 +1238,8 @@ export function Chat({
 								}}
 								onBlur={() => void commitRename(titleDraft)}
 								spellCheck={false}
-								aria-label="Session title"
-								title="Rename this session"
+								aria-label="Título de la sesión"
+								title="Renombrar esta sesión"
 								className="lh-no-drag min-w-[8ch] max-w-[70%] shrink-0 bg-transparent font-title text-3xl tracking-tight caret-current outline-none [field-sizing:content]"
 							/>
 							{/* flex-1 spacer during rename too, so the chips stay at
@@ -1251,7 +1251,7 @@ export function Chat({
 					<>
 						<Hint
 							// F2 renames (registry) — surfaced on the hover.
-							label="Rename session"
+							label="Renombrar sesión"
 							action="rename-session"
 							side="bottom"
 						>
@@ -1275,7 +1275,7 @@ export function Chat({
 					    structure beside the phase chip — access to the full-DAG popup
 					    at every width; the marginalia is the wide-screen glance view. */}
 					{planTree && (
-						<Hint label="Open the full plan" side="bottom">
+						<Hint label="Abrir el plan completo" side="bottom">
 <button
 							type="button"
 							data-testid="plan-chip"
@@ -1308,7 +1308,7 @@ export function Chat({
 							className="pointer-events-none flex shrink-0 select-none items-center gap-1 text-xs font-medium uppercase tracking-wide text-muted-foreground"
 						>
 							<DumbbellIcon className="size-3" />
-							Practice
+							Práctica
 						</span>
 					) : (
 						<PhaseChip phase={phases.at(-1) ?? "probe"} />
@@ -1323,8 +1323,8 @@ export function Chat({
 						<div data-session-find-root="" className={`${COLUMN} flex flex-1 flex-col gap-4 pt-4`}>
 							{messages.length === 0 && !busy && (
 								<ConversationEmptyState
-									title="New session"
-									description="The teacher will open by probing what you already know."
+									title="Nueva sesión"
+									description="El profesor empezará explorando lo que ya sabes."
 								/>
 							)}
 
@@ -1375,7 +1375,7 @@ export function Chat({
 														className="my-4 flex items-center justify-center gap-1.5 font-ui text-xs font-medium uppercase tracking-wide text-muted-foreground"
 													>
 														<ArrowRightIcon className="size-3" />
-														Next problem
+														Siguiente problema
 													</div>
 												);
 											default:
@@ -1434,7 +1434,7 @@ export function Chat({
 												{/* The rail GROUPS (owner round 4, 2026-10-05): the YOU heading
 												    sits INSIDE the rail, same mono-xs register and same 1ch
 												    rail as the thinking rows — one quote geometry. */}
-												<div className="font-medium uppercase tracking-wide text-muted-foreground">You</div>
+												<div className="font-medium uppercase tracking-wide text-muted-foreground">Tú</div>
 												<div className="lh-prose whitespace-pre-wrap text-foreground">
 													{m.parts.filter((p) => p.type === "text").map((p) => p.text).join("\n")}
 												</div>
@@ -1467,7 +1467,7 @@ export function Chat({
 												) {
 													return (
 														<SystemLine key={`retry-${pi}`} testId="tool-retry">
-															Retrying…
+															Reintentando…
 														</SystemLine>
 													);
 												}
@@ -1564,21 +1564,21 @@ export function Chat({
 						    BEFORE beginTurn; the settle kick runs after endTurn). */}
 							{compacting && (
 								<span className="flex items-center gap-2 font-ui text-xs font-medium uppercase tracking-wide text-muted-foreground">
-									<BrailleSpinner label="Compacting context" />
-									<Shimmer duration={1}>COMPACTING CONTEXT…</Shimmer>
+									<BrailleSpinner label="Compactando contexto" />
+									<Shimmer duration={1}>COMPACTANDO CONTEXTO…</Shimmer>
 								</span>
 							)}
 							{(status === "submitted" || turnInFlight) && (
 								<span className="flex items-center gap-2 font-ui text-xs font-medium uppercase tracking-wide text-muted-foreground">
-									<BrailleSpinner label="Thinking" />
+									<BrailleSpinner label="Pensando" />
 									<Shimmer duration={1}>
-										THINKING…
+										PENSANDO…
 									</Shimmer>
 								</span>
 							)}
 							{error && (
 								<div className="rounded-lg border border-destructive/50 bg-destructive/10 px-3 py-2 text-sm">
-									Something went wrong: {error.message}
+									Algo salió mal: {error.message}
 								</div>
 							)}
 						</div>
@@ -1629,7 +1629,7 @@ export function Chat({
 										onClick={() => setSetupOpen(true)}
 										className="rounded-sm border border-border bg-card px-3 py-1.5 font-ui text-xs text-foreground transition-colors hover:border-muted-foreground/50 hover:bg-accent cursor-pointer"
 									>
-										Set up your models
+										Configura tus modelos
 									</button>
 								</div>
 							)
@@ -1654,7 +1654,7 @@ export function Chat({
 							// applies.
 							nextProblem={nextReady}
 							onNext={sendNext}
-							placeholder={nextReady ? "Ask anything, or press Enter for the next one." : undefined}
+							placeholder={nextReady ? "Pregunta lo que quieras o presiona Enter para el siguiente." : undefined}
 						/>
 					}
 					onSubmitAnswer={(output) => {
@@ -2377,7 +2377,7 @@ function DockOverlay({
 				    mid-question unmount), and widening past the floor fades it
 				    back in. */}
 				{pending && plan && (
-					<Hint label="Open the full plan" side="bottom">
+					<Hint label="Abrir el plan completo" side="bottom">
 <button
 						type="button"
 						data-testid="plan-marginalia"

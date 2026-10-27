@@ -246,7 +246,7 @@ export function ChainTableBody({
 			    law: later in the DOM). */}
 			<TopBar>
 				<span className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
-					{chains.length} {chains.length === 1 ? "chain" : "chains"} · {nodes.length} {nodes.length === 1 ? "node" : "nodes"}
+					{chains.length} {chains.length === 1 ? "cadena" : "cadenas"} · {nodes.length} {nodes.length === 1 ? "nodo" : "nodos"}
 				</span>
 				<div className="relative shrink-0">
 					<SearchIcon className="absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
@@ -254,8 +254,8 @@ export function ChainTableBody({
 						value={query}
 						data-testid="chain-table-search"
 						onChange={(e) => onQuery(e.target.value)}
-						placeholder="Search nodes…"
-						aria-label="Search nodes"
+						placeholder="Buscar nodos…"
+						aria-label="Buscar nodos"
 						spellCheck={false}
 						className="lh-no-drag h-8 w-56 rounded-lg border bg-background pl-8 pr-3 text-xs outline-none placeholder:text-muted-foreground focus:border-ring"
 					/>
@@ -264,7 +264,7 @@ export function ChainTableBody({
 					type="button"
 					data-testid="chain-table-close"
 					onClick={onClose}
-					aria-label="Close chains"
+					aria-label="Cerrar cadenas"
 					className="lh-no-drag flex size-8 shrink-0 items-center justify-center rounded-lg border border-border/70 bg-card/80 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
 				>
 					<XIcon className="size-4" />
@@ -288,7 +288,7 @@ export function ChainTableBody({
 						aria-sort={sort.col === "name" ? (sort.dir === 1 ? "ascending" : "descending") : "none"}
 						className="flex flex-1 items-center gap-1 text-left transition-colors hover:text-foreground"
 					>
-						Name {dirIcon("name")}
+						Nombre {dirIcon("name")}
 					</button>
 					<button
 						type="button"
@@ -306,13 +306,13 @@ export function ChainTableBody({
 						aria-sort={sort.col === "created" ? (sort.dir === 1 ? "ascending" : "descending") : "none"}
 						className="flex w-20 shrink-0 items-center justify-end gap-1 text-right transition-colors hover:text-foreground"
 					>
-						Created {dirIcon("created")}
+						Creado {dirIcon("created")}
 					</button>
 				</div>
 
 				{groups.length === 0 && (
 					<div data-testid="chain-table-nomatch" className="px-4 pt-3 text-xs text-muted-foreground">
-						No matching chains.
+						No hay cadenas coincidentes.
 					</div>
 				)}
 
@@ -348,15 +348,15 @@ export function ChainTableBody({
 									indeterminate={selectedCount > 0 && selectedCount < group.nodeIds.length}
 									onToggle={(next) => onToggleNodes(group.nodeIds, next)}
 									testid={`cluster-checkbox-${group.key}`}
-									label={`Select everything born in ${group.label ?? "unlabeled"}`}
+									label={`Seleccionar todo lo originado en ${group.label ?? "sin etiqueta"}`}
 								/>
-								<Expander open={open} onClick={() => onToggleCluster(group.key)} testid={`cluster-toggle-${group.key}`} label={`Expand cluster ${group.label ?? "unlabeled"}`} />
+								<Expander open={open} onClick={() => onToggleCluster(group.key)} testid={`cluster-toggle-${group.key}`} label={`Expandir grupo ${group.label ?? "sin etiqueta"}`} />
 								<span className="flex shrink-0 items-center justify-center text-muted-foreground">
 									{open ? <FolderOpenIcon className="size-3.5" /> : <FolderIcon className="size-3.5" />}
 								</span>
 								<span className="min-w-0 flex-1 truncate text-sm font-medium">
-									{group.label ?? <span className="text-muted-foreground/60">unlabeled</span>}
-									{group.kind === "notes" && <span className="ml-2 text-[11px] uppercase tracking-widest text-muted-foreground/60">notes</span>}
+									{group.label ?? <span className="text-muted-foreground/60">sin etiqueta</span>}
+									{group.kind === "notes" && <span className="ml-2 text-[11px] uppercase tracking-widest text-muted-foreground/60">notas</span>}
 								</span>
 								<span className="w-14 shrink-0 text-right text-xs tabular-nums text-muted-foreground">
 									{group.nodeIds.length}
@@ -397,9 +397,9 @@ export function ChainTableBody({
 													indeterminate={selectedInChain > 0 && selectedInChain < memberIds.length}
 													onToggle={(next) => onToggleNodes(memberIds, next)}
 													testid={`chain-checkbox-${chain.id}`}
-													label={`Select chain ${nameOf(chain.conclusion)}`}
+													label={`Seleccionar cadena ${nameOf(chain.conclusion)}`}
 												/>
-												<Expander open={chainOpen} onClick={() => onToggleChain(chain.id)} testid={`chain-toggle-${chain.id}`} label={`Expand chain ${nameOf(chain.conclusion)}`} />
+												<Expander open={chainOpen} onClick={() => onToggleChain(chain.id)} testid={`chain-toggle-${chain.id}`} label={`Expandir cadena ${nameOf(chain.conclusion)}`} />
 												{/* The chain line: proposition names as faint-outlined
 												    chips. THE LOGIC IS THE PAYLOAD (owner rulings,
 												    2026-09-30): premises join with the LaTeX LAND (∧),
@@ -465,7 +465,7 @@ export function ChainTableBody({
 																checked={selection.has(id)}
 																onToggle={(next) => onToggleNodes([id], next)}
 																testid={`prop-checkbox-${id}`}
-																label={`Select node ${node.name}`}
+																label={`Seleccionar nodo ${node.name}`}
 															/>
 															<span className="min-w-0 flex-1 text-xs leading-relaxed text-muted-foreground">
 																{node.statement}
@@ -493,8 +493,8 @@ export function ChainTableBody({
 						className="pointer-events-auto flex items-center gap-3 rounded-full border bg-card px-4 py-2 shadow-lg"
 					>
 						<span data-testid="chain-selected-summary" className="text-xs font-medium">
-							{selection.size} {selection.size === 1 ? "node" : "nodes"} →{" "}
-							{derived.length} {derived.length === 1 ? "chain" : "chains"}
+							{selection.size} {selection.size === 1 ? "nodo" : "nodos"} →{" "}
+							{derived.length} {derived.length === 1 ? "cadena" : "cadenas"}
 						</span>
 						<button
 							type="button"
@@ -502,18 +502,18 @@ export function ChainTableBody({
 							onClick={onClear}
 							className="rounded-full px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
 						>
-							Clear
+							Limpiar
 						</button>
 						{selectMode ? (
 							<button
 								type="button"
 								data-testid="chain-practice-done"
 								onClick={onSelect}
-								aria-label={`Done picking — ${selection.size} ${selection.size === 1 ? "proposition" : "propositions"} selected`}
+								aria-label={`Selección terminada — ${selection.size} ${selection.size === 1 ? "proposición seleccionada" : "proposiciones seleccionadas"}`}
 								className="flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/80"
 							>
 								<DumbbellIcon aria-hidden="true" className="size-3.5" />
-								Done
+								Listo
 							</button>
 						) : (
 							<>
@@ -526,11 +526,11 @@ export function ChainTableBody({
 								type="button"
 								data-testid="chain-delete"
 								onClick={onDelete}
-								aria-label={`Delete ${selection.size} selected ${selection.size === 1 ? "node" : "nodes"}`}
+								aria-label={`Eliminar ${selection.size} ${selection.size === 1 ? "nodo seleccionado" : "nodos seleccionados"}`}
 								className="flex items-center gap-1.5 rounded-full border border-destructive/50 bg-destructive/10 px-3 py-1.5 text-xs font-medium text-destructive transition-colors hover:bg-destructive/20"
 							>
 								<Trash2Icon aria-hidden="true" className="size-3.5" />
-								Delete
+								Eliminar
 							</button>
 							</>
 						)}

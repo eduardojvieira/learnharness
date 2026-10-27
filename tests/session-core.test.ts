@@ -508,7 +508,7 @@ describe("provider-error banner (live and saved)", () => {
 
 	it("uses the existing fallback wording when the saved failure has no error text", () => {
 		const withoutText = { ...failed(), errorMessage: undefined } as LhMessage;
-		assert.equal(model({ initialMessages: [withoutText] }).getState().error?.message, "An error occurred.");
+		assert.equal(model({ initialMessages: [withoutText] }).getState().error?.message, "Ocurrió un error.");
 		assert.equal(model().getState().error, null);
 	});
 
@@ -707,7 +707,7 @@ describe("truncated stream recovery", () => {
 		assert.equal(posts, 1);
 		assert.equal(streams, 2);
 		assert.equal(m.status, "error");
-		assert.equal(m.getState().error?.message, "The connection dropped before the turn completed.");
+		assert.equal(m.getState().error?.message, "La conexión se interrumpió antes de que terminara el turno.");
 	});
 
 	it("reports the approved connection error when the recovery record read fails", async () => {
@@ -720,7 +720,7 @@ describe("truncated stream recovery", () => {
 		} });
 		await m.send({ type: "text", text: "go" });
 		assert.equal(m.status, "error");
-		assert.equal(m.getState().error?.message, "The connection dropped before the turn completed.");
+		assert.equal(m.getState().error?.message, "La conexión se interrumpió antes de que terminara el turno.");
 	});
 
 	it("accepts turn-settled when the original turn finished during the disconnection", async () => {
@@ -769,7 +769,7 @@ describe("truncated stream recovery", () => {
 		} });
 		await m.send({ type: "text", text: "go" });
 		assert.equal(m.status, "error");
-		assert.equal(m.getState().error?.message, "The connection dropped before the turn completed.");
+		assert.equal(m.getState().error?.message, "La conexión se interrumpió antes de que terminara el turno.");
 	});
 
 	it("preserves malformed-event diagnostics rather than calling them network drops", async () => {
@@ -778,7 +778,7 @@ describe("truncated stream recovery", () => {
 		await m.send({ type: "text", text: "go" });
 		assert.equal(streams, 1);
 		assert.equal(m.status, "error");
-		assert.notEqual(m.getState().error?.message, "The connection dropped before the turn completed.");
+		assert.notEqual(m.getState().error?.message, "La conexión se interrumpió antes de que terminara el turno.");
 		assert.match(m.getState().error!.message, /JSON|property name/);
 	});
 
@@ -788,7 +788,7 @@ describe("truncated stream recovery", () => {
 		await m.send({ type: "text", text: "go" });
 		assert.equal(streams, 2);
 		assert.equal(m.status, "error");
-		assert.equal(m.getState().error?.message, "The connection dropped before the turn completed.");
+		assert.equal(m.getState().error?.message, "La conexión se interrumpió antes de que terminara el turno.");
 	});
 
 	it("a superseded consume cannot recover or overwrite its replacement's state", async () => {

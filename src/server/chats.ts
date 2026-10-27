@@ -74,7 +74,7 @@ function runningWorkBlocker(chatId: string): Extract<ChatDeleteOutcome, { status
 			ok: false,
 			status: 409,
 			code: "turn_in_flight",
-			error: "A turn is running in this session — try again when it finishes",
+			error: "Hay un turno en curso en esta sesión — inténtalo de nuevo cuando termine",
 			jobIds: [],
 		};
 	}
@@ -88,7 +88,7 @@ function runningWorkBlocker(chatId: string): Extract<ChatDeleteOutcome, { status
 			ok: false,
 			status: 409,
 			code: "jobs_running",
-			error: "Background jobs are still running in this session — try again when they finish",
+			error: "Aún hay tareas en segundo plano en curso en esta sesión — inténtalo de nuevo cuando terminen",
 			jobIds: runningJobs.map((job) => job.id),
 		};
 	}
@@ -97,7 +97,7 @@ function runningWorkBlocker(chatId: string): Extract<ChatDeleteOutcome, { status
 
 export async function deleteChatSession(chatId: string, mode: ChatDeleteMode): Promise<ChatDeleteOutcome> {
 	if (!stores.chatStore.getChat(chatId)) {
-		return { ok: false, status: 404, code: "not_found", error: "No such session" };
+		return { ok: false, status: 404, code: "not_found", error: "No existe esa sesión" };
 	}
 	const blocker = runningWorkBlocker(chatId);
 	if (blocker) return blocker;
@@ -110,7 +110,7 @@ export async function deleteChatSession(chatId: string, mode: ChatDeleteMode): P
 					ok: false,
 					status: 503,
 					code: "extraction_winding_down",
-					error: "The session's extraction is still winding down — try again in a moment",
+					error: "La extracción de la sesión aún se está deteniendo — inténtalo de nuevo en un momento",
 				};
 			}
 			await new Promise((resolve) => setTimeout(resolve, WIND_DOWN_POLL_MS));

@@ -37,7 +37,7 @@ async function chatGPTControl(command, connection) {
 		if (command?.op === "disconnect" && typeof command.id === "string") return await connection.disconnect(command.id);
 		if (command?.op === "logout" && typeof command.id === "string") return await connection.logout(command.id);
 		if (command?.op === "consent" && typeof command.enabled === "boolean") return await connection.consent(command.enabled);
-		return { error: "Unsupported ChatGPT control." };
+		return { error: "Operación de ChatGPT no compatible." };
 	} catch (err) { return { error: publicError(err) }; }
 }
 module.exports = { attachChatGPTChild, trustedSender, chatGPTControl };

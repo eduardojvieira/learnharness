@@ -31,7 +31,7 @@ import { SettingsRow } from "./controls.tsx";
 const SCOPES: { scope: KeyScope; label: string }[] = [
 	{ scope: "global", label: "Global" },
 	{ scope: "chat", label: "Chat" },
-	{ scope: "graph", label: "Graph" },
+	{ scope: "graph", label: "Grafo" },
 ];
 
 /** The overrides map after ONE change (pure — exported for tests):
@@ -109,12 +109,12 @@ export function KeyboardSection() {
 									<SettingsRow
 										key={def.id}
 										label={def.label}
-										hint={def.displayOnly ? "Fixed — part of this screen" : undefined}
+										hint={def.displayOnly ? "Fijo: forma parte de esta pantalla" : undefined}
 										testid={`kbd-row-${def.id}`}
 									>
 										<span className="flex items-center gap-2">
 											<kbd className="rounded-sm border border-border bg-muted px-1.5 py-0.5 font-ui text-xs">
-												{rebinding === def.id ? "Press keys…" : formatBinding(effective)}
+												{rebinding === def.id ? "Presiona las teclas…" : formatBinding(effective)}
 											</kbd>
 											{def.displayOnly ? null : rebinding === def.id ? (
 												<button
@@ -122,7 +122,7 @@ export function KeyboardSection() {
 													onClick={() => setRebinding(null)}
 													className="text-xs text-muted-foreground/70 underline-offset-2 hover:text-foreground hover:underline"
 												>
-													Cancel
+													Cancelar
 												</button>
 											) : (
 												<>
@@ -132,7 +132,7 @@ export function KeyboardSection() {
 														data-testid={`kbd-rebind-${def.id}`}
 														className="text-xs text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
 													>
-														Rebind
+														Reasignar
 													</button>
 													{overridden(def.id) && (
 														<button
@@ -141,7 +141,7 @@ export function KeyboardSection() {
 															data-testid={`kbd-reset-${def.id}`}
 															className="text-xs text-muted-foreground/70 underline-offset-2 hover:text-foreground hover:underline"
 														>
-															Reset
+															Restablecer
 														</button>
 													)}
 												</>
@@ -155,14 +155,14 @@ export function KeyboardSection() {
 				);
 			})}
 			<div className="mt-1 flex items-center justify-between">
-				<span className="text-xs text-muted-foreground/70">Stored on this device (lh:keymap) — overrides only.</span>
+				<span className="text-xs text-muted-foreground/70">Se guarda en este dispositivo (lh:keymap); solo los cambios.</span>
 				<button
 					type="button"
 					onClick={resetAll}
 					data-testid="kbd-reset-all"
 					className="text-xs text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
 				>
-					Reset all to defaults
+					Restablecer todo a los valores predeterminados
 				</button>
 			</div>
 		</>
